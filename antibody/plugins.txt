@@ -1,0 +1,5 @@
+mafredri/zsh-async
+bhilburn/powerlevel9k
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-completions
+zdharma/fast-syntax-highlighting
