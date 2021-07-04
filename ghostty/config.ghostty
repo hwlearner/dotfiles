@@ -1,0 +1,40 @@
+# This is the configuration file for Ghostty.
+#
+# This template file has been automatically created at the following
+# path since Ghostty couldn't find any existing config files on your system:
+#
+#   /Users/han/Library/Application Support/com.mitchellh.ghostty/config
+#
+# The template does not set any default options, since Ghostty ships
+# with sensible defaults for all options. Users should only need to set
+# options that they want to change from the default.
+#
+# Run `ghostty +show-config --default --docs` to view a list of
+# all available config options and their default values.
+#
+# Additionally, each config option is also explained in detail
+# on Ghostty's website, at https://ghostty.org/docs/config.
+#
+# Ghostty can reload the configuration while running by using the menu
+# options or the bound key (default: Command + Shift + comma on macOS and
+# Control + Shift + comma on other platforms). Not all config options can be
+# reloaded while running; some only apply to new windows and others may require
+# a full restart to take effect.
+
+# Config syntax crash course
+# ==========================
+# # The config file consists of simple key-value pairs,
+# # separated by equals signs.
+font-family = Maple Mono NL NF CN
+theme = light:Catppuccin Latte,dark:Catppuccin Mocha
+window-padding-x = 6
+macos-titlebar-style = hidden
+cursor-style = block
+cursor-style-blink = false
+background-opacity = 0.80
+background-blur = macos-glass-clear
+
+# Prefer separate windows over native tabs so AeroSpace can tile Ghostty reliably.
+window-save-state = never
+keybind = cmd+t=new_window
+keybind = cmd+n=new_window

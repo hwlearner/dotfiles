@@ -1,0 +1,43 @@
+{
+  "workbench.colorTheme": "Catppuccin Mocha",
+  "window.autoDetectColorScheme": true,
+  "workbench.preferredDarkColorTheme": "Catppuccin Mocha",
+  "workbench.preferredLightColorTheme": "Catppuccin Latte",
+  "workbench.iconTheme": "catppuccin-latte",
+  "editor.lineNumbers": "relative",
+  "editor.minimap.enabled": false,
+  "editor.formatOnSave": false,
+  "editor.inlineSuggest.enabled": true,
+  "editor.cursorBlinking": "solid",
+  "editor.cursorSmoothCaretAnimation": "off",
+  "editor.codeLens": false,
+  "editor.lightbulb.enabled": "off",
+  "workbench.startupEditor": "none",
+  "workbench.editor.enablePreview": false,
+  "files.autoSave": "off",
+  "terminal.integrated.copyOnSelection": false,
+  "markdown.updateLinksOnFileMove.enabled": "always",
+  "markdown.preview.breaks": true,
+  "markdown.preview.fontSize": 15,
+  "markdown.validate.enabled": true,
+  "markdownlint.configFile": "/Users/han/.markdownlint.yaml",
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "on",
+      "strings": "on",
+      "other": "on"
+    },
+    "editor.lineNumbers": "off",
+    "editor.formatOnSave": true,
+    "editor.renderWhitespace": "selection"
+  },
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "vscode-neovim.useCtrlKeys": true,
+  "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
+  "vscode-neovim.neovimExecutablePaths.win32": "C:\\Program Files\\Neovim\\bin\\nvim.exe",
+  "vscode-neovim.neovimInitVimPaths.darwin": "/Users/han/.config/nvim-vscode/init.lua",
+  "vscode-neovim.neovimInitVimPaths.win32": "C:\\Users\\YOUR_USER\\.config\\nvim-vscode\\init.lua"
+}

@@ -1,0 +1,24 @@
+.DS_Store
+
+# Shell/editor local state
+.zsh_history
+.viminfo
+*.swp
+*.swo
+nvim.log
+
+# Secrets and app state
+.ssh/
+.gnupg/
+.claude.json
+.claude/
+.codex/
+.config/gh/hosts.yml
+vscode/User/globalStorage/
+
+# Downloaded plugin/runtime state
+.tmux/plugins/
+vscode/extensions/
+nvim/.lazy/
+nvim/lazy/
+nvim/.local/
