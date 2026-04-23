@@ -35,9 +35,12 @@
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
   },
+  "CangjieSdkPath.CJNativeBackend": "/Users/han/Developer/cangjie/current",
+  "CangjieSdk.Option": "CJNative",
   "vscode-neovim.useCtrlKeys": true,
   "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
   "vscode-neovim.neovimExecutablePaths.win32": "C:\\Program Files\\Neovim\\bin\\nvim.exe",
   "vscode-neovim.neovimInitVimPaths.darwin": "/Users/han/.config/nvim-vscode/init.lua",
-  "vscode-neovim.neovimInitVimPaths.win32": "C:\\Users\\YOUR_USER\\.config\\nvim-vscode\\init.lua"
+  "vscode-neovim.neovimInitVimPaths.win32": "C:\\Users\\YOUR_USER\\.config\\nvim-vscode\\init.lua",
+  "editor.accessibilitySupport": "on"
 }

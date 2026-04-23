@@ -108,7 +108,7 @@ on-mode-changed = []
 
 [[on-window-detected]]
     if.app-id = 'com.apple.mail'
-    run = ['layout floating', 'move-node-to-workspace 4']
+    run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
     if.app-id = 'com.apple.systempreferences'
