@@ -6,6 +6,7 @@
   "workbench.iconTheme": "catppuccin-latte",
   "editor.lineNumbers": "relative",
   "editor.minimap.enabled": false,
+  "editor.fontFamily": "'Maple Mono NL NF CN', 'Maple Mono NF CN', monospace",
   "editor.formatOnSave": false,
   "editor.inlineSuggest.enabled": true,
   "editor.cursorBlinking": "solid",
@@ -15,9 +16,11 @@
   "workbench.startupEditor": "none",
   "workbench.editor.enablePreview": false,
   "files.autoSave": "off",
+  "terminal.integrated.fontFamily": "'Maple Mono NL NF CN', 'Maple Mono NF CN', monospace",
   "terminal.integrated.copyOnSelection": false,
   "markdown.updateLinksOnFileMove.enabled": "always",
   "markdown.preview.breaks": true,
+  "markdown.preview.fontFamily": "'Maple Mono NL NF CN', 'Maple Mono NF CN', sans-serif",
   "markdown.preview.fontSize": 15,
   "markdown.validate.enabled": true,
   "markdownlint.configFile": "/Users/han/.markdownlint.yaml",
@@ -42,5 +45,5 @@
   "vscode-neovim.neovimExecutablePaths.win32": "C:\\Program Files\\Neovim\\bin\\nvim.exe",
   "vscode-neovim.neovimInitVimPaths.darwin": "/Users/han/.config/nvim-vscode/init.lua",
   "vscode-neovim.neovimInitVimPaths.win32": "C:\\Users\\YOUR_USER\\.config\\nvim-vscode\\init.lua",
-  "editor.accessibilitySupport": "on"
+  "editor.accessibilitySupport": "off"
 }

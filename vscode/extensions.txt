@@ -4,6 +4,7 @@ catppuccin.catppuccin-vsc-icons
 davidanson.vscode-markdownlint
 esbenp.prettier-vscode
 github.copilot-chat
+ide-innovation-lab.cangjie
 ms-ceintl.vscode-language-pack-zh-hans
 ms-vscode.cmake-tools
 ms-vscode.cpp-devtools
