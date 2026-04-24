@@ -1,6 +1,12 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+local runtime_lua = vim.env.VIMRUNTIME and (vim.env.VIMRUNTIME .. "/lua/?.lua")
+if runtime_lua and not package.path:find(runtime_lua, 1, true) then
+  local runtime_lua_init = vim.env.VIMRUNTIME .. "/lua/?/init.lua"
+  package.path = runtime_lua .. ";" .. runtime_lua_init .. ";" .. package.path
+end
+
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.hlsearch = true
