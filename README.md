@@ -15,6 +15,22 @@
 - `vscode/`：VS Code 用户设置、快捷键、语言配置和扩展列表。
 - `autoconfig.yml`、`quickmarks`：仓库中保留的旧版 qutebrowser 配置。
 
+## 跨平台分层
+
+这个仓库按“公共配置保守、平台差异显式、本机覆盖不入库”的方式维护。
+
+- 公共文件直接放在仓库根目录，例如 `.zshrc`、`.zshenv`、`.zprofile`、`.gitconfig`。
+- 平台差异在文件内通过 `uname -s` 分支处理。
+  macOS 只在 `Darwin` 分支里使用 Homebrew、OpenJDK、HarmonyOS SDK 等路径。
+  Linux 只在 `Linux` 分支里处理 Gentoo/WSL 等 PATH 行为。
+- 本机私有配置放在 home 目录的 local 文件里，不提交到仓库：
+  - `~/.zshenv.local`
+  - `~/.zprofile.local`
+  - `~/.zshrc.local`
+  - `~/.gitconfig.local`
+- `.gitconfig` 只保留用户身份和 local include。
+  `safe.directory`、credential helper、公司/个人项目差异等机器相关配置应放入 `~/.gitconfig.local`。
+
 ## 工具来源
 
 开发工具按职责划分来源，不按“哪里装起来顺手”来划分。
@@ -35,6 +51,9 @@
   macOS 只在 macOS 下使用 Homebrew 路径。
   Linux/WSL 不应继承 `/opt/homebrew/...` 这类 macOS 专用路径。
 - 如果某个工具开始在 Neovim 之外也经常使用，就应当从 Mason 迁移到系统包管理器或用户级 `npm`。
+- Neovim 的 Mason 去重逻辑按实际命令路径判断。
+  只有当工具存在于 Mason 目录之外时，才会从 Mason 的安装列表里移除或设置 `mason = false`。
+  这样 macOS 和 Linux 可以共用同一份配置，同时避免把 Mason 自己提供的工具误判成系统工具。
 
 ## 不纳入版本控制
 
