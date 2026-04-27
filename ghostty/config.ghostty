@@ -31,7 +31,8 @@ window-padding-x = 6
 macos-titlebar-style = hidden
 cursor-style = block
 cursor-style-blink = false
-background-opacity = 0.80
+background-opacity = 0.72
+background-opacity-cells = true
 background-blur = macos-glass-clear
 
 # Prefer separate windows over native tabs so AeroSpace can tile Ghostty reliably.

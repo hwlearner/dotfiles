@@ -13,6 +13,7 @@
 - `hammerspoon/`：来自 `~/.hammerspoon` 的 Hammerspoon 自动化配置。
 - `git/ignore`：来自 `~/.config/git/ignore` 的全局 Git 忽略规则。
 - `vscode/`：VS Code 用户设置、快捷键、语言配置和扩展列表。
+- `zed/`：Zed 用户设置、快捷键和全局任务配置。
 - `autoconfig.yml`、`quickmarks`：仓库中保留的旧版 qutebrowser 配置。
 
 ## 跨平台分层
@@ -54,6 +55,17 @@
 - Neovim 的 Mason 去重逻辑按实际命令路径判断。
   只有当工具存在于 Mason 目录之外时，才会从 Mason 的安装列表里移除或设置 `mason = false`。
   这样 macOS 和 Linux 可以共用同一份配置，同时避免把 Mason 自己提供的工具误判成系统工具。
+
+## macOS 开发环境
+
+macOS 上用 Homebrew 复现基础开发工具：
+
+```sh
+brew bundle --file=Brewfile
+```
+
+`Brewfile` 只保留开发环境相关的 formula、cask 和 VS Code 扩展。
+娱乐、游戏、临时测试应用不放入这个清单。
 
 ## 不纳入版本控制
 

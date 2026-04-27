@@ -1,0 +1,40 @@
+{
+  "base_keymap": "VSCode",
+  "vim_mode": true,
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "One Dark"
+  },
+  "buffer_font_family": "Maple Mono NL NF CN",
+  "buffer_font_size": 15,
+  "ui_font_size": 15,
+  "relative_line_numbers": "enabled",
+  "autosave": "off",
+  "format_on_save": "off",
+  "show_edit_predictions": true,
+  "soft_wrap": "editor_width",
+  "preferred_line_length": 120,
+  "terminal": {
+    "shell": {
+      "program": "/bin/zsh"
+    },
+    "font_family": "Maple Mono NL NF CN"
+  },
+  "languages": {
+    "Markdown": {
+      "soft_wrap": "editor_width",
+      "format_on_save": "off"
+    },
+    "C": {
+      "format_on_save": "off"
+    },
+    "C++": {
+      "format_on_save": "off"
+    }
+  },
+  "telemetry": {
+    "metrics": false,
+    "diagnostics": false
+  }
+}

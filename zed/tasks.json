@@ -1,0 +1,37 @@
+[
+  {
+    "label": "markdownlint current file",
+    "command": "markdownlint-cli2",
+    "args": ["--config", "$HOME/.markdownlint.yaml", "$ZED_FILE"],
+    "reveal": "always",
+    "hide": "never"
+  },
+  {
+    "label": "markdownlint project",
+    "command": "markdownlint-cli2",
+    "args": ["--config", "$HOME/.markdownlint.yaml", "**/*.md"],
+    "reveal": "always",
+    "hide": "never"
+  },
+  {
+    "label": "cmake build",
+    "command": "cmake",
+    "args": ["--build", "build"],
+    "reveal": "always",
+    "hide": "never"
+  },
+  {
+    "label": "cargo test",
+    "command": "cargo",
+    "args": ["test"],
+    "reveal": "always",
+    "hide": "never"
+  },
+  {
+    "label": "git status",
+    "command": "git",
+    "args": ["status", "--short", "--branch"],
+    "reveal": "always",
+    "hide": "never"
+  }
+]

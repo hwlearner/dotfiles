@@ -1,0 +1,36 @@
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      "cmd-shift-r": "task::Spawn",
+      "cmd-shift-t": "task::Rerun"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal && !VimWaiting && vim_operator == none",
+    "bindings": {
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-l": "workspace::ActivatePaneRight"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "cmd-shift-r": "task::Spawn",
+      "cmd-shift-t": "task::Rerun"
+    }
+  },
+  {
+    "context": "MarkdownPreview",
+    "bindings": {
+      "j": "markdown::ScrollDown",
+      "k": "markdown::ScrollUp",
+      "ctrl-d": "markdown::ScrollPageDown",
+      "ctrl-u": "markdown::ScrollPageUp",
+      "g g": "markdown::ScrollToTop",
+      "shift-g": "markdown::ScrollToBottom"
+    }
+  }
+]

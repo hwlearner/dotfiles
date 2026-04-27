@@ -19,10 +19,10 @@ case "$(uname -s)" in
     ;;
 esac
 
-if [[ -r "$fzf_base/key-bindings.zsh" ]]; then
+if [[ -o interactive && -t 0 && -t 1 && -r "$fzf_base/key-bindings.zsh" ]]; then
   source "$fzf_base/key-bindings.zsh"
 fi
-if [[ -r "$fzf_base/completion.zsh" ]]; then
+if [[ -o interactive && -t 0 && -t 1 && -r "$fzf_base/completion.zsh" ]]; then
   source "$fzf_base/completion.zsh"
 fi
 unset fzf_base

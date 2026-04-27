@@ -6,6 +6,7 @@ _G.__appInputSwitcherState = state
 local appInputMap = {
   ["com.openai.codex"] = { sourceID = "com.apple.inputmethod.SCIM.ITABC", label = "Pinyin - ABC" },
   ["com.microsoft.VSCode"] = { layout = "ABC", label = "ABC" },
+  ["dev.zed.Zed"] = { layout = "ABC", label = "ABC" },
   ["com.mitchellh.ghostty"] = { layout = "ABC", label = "ABC" },
 }
 
