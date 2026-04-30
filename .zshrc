@@ -1,6 +1,7 @@
 export EDITOR=nvim
 export VISUAL=nvim
 export PAGER=less
+export OPENSPEC_TELEMETRY=0
 
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=50000
@@ -49,3 +50,6 @@ fi
 if command -v starship >/dev/null 2>&1; then
   eval "$(starship init zsh)"
 fi
+
+# opencode
+export PATH=/home/han/.opencode/bin:$PATH

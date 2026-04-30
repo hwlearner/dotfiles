@@ -390,3 +390,34 @@ tools:
 - **宿主机智慧运维** 通过 MCP 让 AI 成为了你的私人虚拟化管家，省心省力。
 
 后续可根据需要扩展：添加 NAS 功能、Home Assistant、AI 模型训练环境等，一切尽在掌控。
+
+---
+
+## 10. 实施进度
+
+### Phase 1 ✅ PVE 安装（2026-04-30 ~ 05-01）
+
+**方式**：Windows → QEMU → 直通物理盘 → kernel/initrd 直接启动 → PVE TUI 安装器
+
+**已完成的配置**：
+- [x] PVE 9.1 已安装到 ZHITAI TiPlus7100 2TB 物理盘（GPT + EFI + LVM）
+- [x] LVM：pve-root (96G) + pve-swap (8G) + pve-data (thin, 剩余空间)
+- [x] 网络：vmbr0 桥接 DHCP，通过 systemd.link 按 MAC 固定网卡名为 lan0
+- [x] UEFI GRUB 安装 + 回退引导 (/EFI/BOOT/BOOTX64.EFI)
+- [x] SSH 密钥部署完毕，root 密码已知
+- [x] PVE Web 面板 (pveproxy) 正常运行
+
+**待完成（物理启动后）**：
+- [ ] 物理启动，确认网卡识别为 lan0
+- [ ] PVE Web 面板访问（https://<IP>:8006）
+- [ ] 配置静态 IP、DNS、NTP
+- [ ] 配置 PVE 订阅/仓库
+- [ ] 创建 Windows VM + 物理盘直通 + GPU 直通
+- [ ] 部署 Sunshine + Moonlight
+- [ ] 部署 AI Agent 容器（Hermes / OpenCode）
+
+**物理启动步骤**：
+1. 重启电脑
+2. BIOS/UEFI 选 ZHITAI TiPlus7100 2TB 启动
+3. 启动后检查网络：ip a show vmbr0
+4. SSH 接入或直接 Web 访问 PVE
