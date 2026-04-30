@@ -12,7 +12,42 @@
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-j": "workspace::ActivatePaneDown",
       "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-l": "workspace::ActivatePaneRight"
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "shift-h": "pane::ActivatePreviousItem",
+      "shift-l": "pane::ActivateNextItem",
+      "[ b": "pane::ActivatePreviousItem",
+      "] b": "pane::ActivateNextItem"
+    }
+  },
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "space f f": "file_finder::Toggle",
+      "space f w": "pane::DeploySearch",
+      "space f r": "file_finder::Toggle",
+      "space f n": "workspace::NewFile",
+      "space f s": "workspace::Save",
+      "space b b": "tab_switcher::Toggle",
+      "space b d": "pane::CloseActiveItem",
+      "space b n": "pane::ActivateNextItem",
+      "space b p": "pane::ActivatePreviousItem",
+      "space e": "workspace::ToggleLeftDock",
+      "space w": "workspace::Save",
+      "space /": "buffer_search::Deploy",
+      "space s g": "pane::DeploySearch",
+      "space s r": ["pane::DeploySearch", { "replace_enabled": true }],
+      "space g g": "git_panel::ToggleFocus",
+      "space g b": "editor::ToggleGitBlame",
+      "space g d": "editor::ToggleSelectedDiffHunks",
+      "space c a": "editor::ToggleCodeActions",
+      "space c r": "editor::Rename",
+      "space c f": "editor::Format",
+      "space x x": "diagnostics::Deploy",
+      "space u r": "editor::FindAllReferences",
+      "space q": "pane::CloseActiveItem",
+      "space s o": "outline::Toggle",
+      "space '": "terminal_panel::Toggle",
+      "space t n": "workspace::NewCenterTerminal"
     }
   },
   {
