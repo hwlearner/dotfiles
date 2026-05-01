@@ -36,30 +36,36 @@ options vfio-pci ids=10de:2788,10de:22b1 disable_vga=1
 
 ---
 
-## 2. Windows 物理盘直通实现双启动
+## 2. Windows VM + GPU 直通 + Sunshine 串流
 
-核心思路：Windows 独占一块物理硬盘，既可以裸机 UEFI 直接引导，也可以被 Proxmox 以整盘方式直通给虚拟机启动。两种方式使用完全相同的数据。
+### 2.1 准备工作
 
-### 2.1 裸机安装 Windows（推荐先做）
+1. 确定 Windows 物理硬盘的 by-id：`ls -la /dev/disk/by-id/`，找 NVMe 或 SSD 的完整 ID（如 `nvme-Samsung_SSD_xxx`）
+2. 确认硬盘是 UEFI + GPT 格式（Windows 已装好时默认就是）
 
-1. 关机，仅连接目标硬盘和 Windows 安装 U 盘（拔掉 Proxmox 系统盘）
-2. UEFI + GPT 模式安装 Windows
-3. 预装 VirtIO 驱动（网卡、SCSI）和 NVIDIA 显卡驱动
-4. 关机，插回 Proxmox 系统盘，BIOS 设置 PVE 盘为第一启动项
+### 2.2 创建 Windows VM
 
-### 2.2 创建直通整盘的 Windows VM
+在 Proxmox Web GUI 创建 VM：
 
-- **System**：OVMF (UEFI)，添加 EFI Storage + TPM v2.0
-- **Disk**：不创建虚拟盘，在 Hardware 中添加物理盘（`/dev/disk/by-id/xxx`，推荐先用 SATA 模式）
-- **PCI Device**：添加已隔离的 NVIDIA GPU 及 Audio，勾选 All Functions、Primary GPU、ROM-Bar、PCI-Express
-- **Boot Order**：确保物理硬盘在首位
+- **OS**：不使用任何介质，Guest OS 选 Microsoft Windows 11/2022
+- **System**：BIOS 选 **OVMF (UEFI)**，添加 EFI Storage + TPM v2.0
+- **Disk**：不创建虚拟盘。Hardware → Add → Hard Disk → Bus/Device 选 **SATA**（Windows 原生支持），Path 填 `/dev/disk/by-id/你的硬盘ID`
+- **CPU**：Type = `host`，4-8 核
+- **Memory**：16 GB 起，关闭 Ballooning
+- **Network**：模型选 **e1000**（Windows 自带驱动，后续可改 VirtIO）
 
-### 2.3 启动方式
+**添加 GPU 直通**：Hardware → Add → PCI Device，选择已隔离的 NVIDIA GPU 及其 Audio 设备，勾选 All Functions、Primary GPU、ROM-Bar、PCI-Express。
 
-- **物理启动**：BIOS 引导菜单选择 Windows 硬盘 → 原生裸机性能
-- **虚拟机启动**：Proxmox Web GUI 启动 VM → GPU 直通 + Sunshine 串流
+### 2.3 启动与驱动完善
 
-两种方式共用同一份系统，软件进度完全一致。Windows 可能因硬件环境变化需重新激活，微软账户数字许可证可方便解决。
+启动 VM 后：
+1. Windows 直接进入桌面，Sunshine 自动随开机运行
+2. 挂载 VirtIO 驱动 ISO，补装 VirtIO 网卡驱动
+3. 装完后可关机，把 SATA 盘改回 **VirtIO Block**（更高性能），网卡改回 **VirtIO**
+
+### 2.4 Moonlight 连接
+
+外部设备安装 Moonlight，通过局域网 IP 配对 Sunshine，即可桌面级串流。
 
 ---
 
@@ -100,7 +106,7 @@ host-mcp (systemd 服务, 用户 host-mcp, 非 root)
     ├── disk_usage       → 磁盘用量
     ├── service_status   → 服务状态查询
     ├── check_updates    → apt 待更新列表
-    ├── restart_service  → 重启白名单服务 (nginx/pveproxy/tailscaled/ssh/cron)
+    ├── restart_service  → 重启白名单服务 (pveproxy/tailscaled/ssh/cron)
     ├── clear_logs       → 清理旧 journal 日志
     ├── run_upgrade      → apt update + dist-upgrade
     └── clean_packages   → apt autoremove
@@ -123,6 +129,37 @@ host-mcp (systemd 服务, 用户 host-mcp, 非 root)
 opencode serve &
 opencode web --hostname 0.0.0.0 --port 4096 --password <密码>
 ```
+
+### 4.4 项目容器模板
+
+预装完整开发环境的 LXC 模板，新项目秒建：
+
+| 分类 | 内容 |
+|------|------|
+| **基础** | git, curl, build-essential, cmake, ninja |
+| **运行时** | Node.js 18, Python 3.12, OpenJDK 21, Rust 1.95, Lua 5.4, Cangjie 1.1.0 |
+| **编辑器服务** | OpenCode, code-server 4.117 |
+| **开发工具** | neovim, tmux, ripgrep, fd-find, bat, eza, fzf, starship, lazygit |
+| **Shell** | zsh + starship prompt |
+| **Git** | `user.name=田凝汉`, `user.email=sc.han@petalmail.com` |
+| **环境** | CANGJIE_HOME、Cargo、.opencode/bin 均已加入 PATH |
+
+**使用方式**：
+```bash
+# 克隆模板 → 项目容器
+pct clone 208 <新ID> --hostname project-foo
+pct set <新ID> --net0 name=eth0,bridge=vmbr0,ip=dhcp
+pct start <新ID>
+
+# 挂载源码（宿主机目录）
+pct set <新ID> -mp0 /srv/projects/foo,mp=/workspace
+
+# 进入容器启动 OpenCode
+pct enter <新ID>
+opencode web --hostname 0.0.0.0 --port 4096 --password <密码>
+```
+
+可通过 Tailscale 子网路由或 nginx location 访问 `https://serverhan.tail3fd170.ts.net/project-foo`。
 
 ---
 
@@ -149,9 +186,9 @@ PVE 宿主机 (子网路由器, 192.168.1.0/24)
         └── 192.168.1.15  项目 B (OpenCode :4096)
 ```
 
-### 5.2 Tailscale Serve + nginx HTTPS 反向代理
+### 5.2 Tailscale Serve
 
-Tailscale Serve 自动签发 Let's Encrypt 证书，nginx 处理路径路由：
+Tailscale Serve 自动签发 Let's Encrypt 证书，直接转发：
 
 ```
 浏览器 (HTTPS)
@@ -160,46 +197,15 @@ Tailscale Serve 自动签发 Let's Encrypt 证书，nginx 处理路径路由：
 tailscale serve (:443, 自动 TLS 证书)
     │
     ▼
-nginx (:8443, HTTP 本地反向代理)
-    ├── /hermes → http://192.168.1.13:9119/
-    └── /       → http://192.168.1.13:9119/
+Hermes Dashboard (:9119)
 ```
 
 **访问地址**：
 
 | 服务 | 地址 |
 |------|------|
-| Hermes Dashboard (HTTPS) | `https://serverhan.tail3fd170.ts.net/hermes` |
-| Hermes Dashboard (根) | `https://serverhan.tail3fd170.ts.net/` |
+| Hermes Dashboard (HTTPS) | `https://serverhan.tail3fd170.ts.net/` |
 | PVE Web 面板 | `https://192.168.1.12:8006`（PVE 不支持子路径） |
-
-**nginx 配置** (`/etc/nginx/sites-available/tailserve`)：
-
-```nginx
-server {
-    listen 8443;
-    location /hermes { proxy_pass http://192.168.1.13:9119/; }
-    location /      { proxy_pass http://192.168.1.13:9119/; }
-}
-```
-
-添加新项目只需加一个 location 块，然后 `systemctl reload nginx`。
-
-### 5.3 安装 Tailscale
-
-```bash
-# PVE 宿主机（子网路由器）
-curl -fsSL https://tailscale.com/install.sh | sh
-tailscale up --advertise-routes=192.168.1.0/24 --accept-routes
-echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.d/99-tailscale.conf
-sysctl -p /etc/sysctl.d/99-tailscale.conf
-
-# macOS 客户端
-curl -fsSL https://tailscale.com/install.sh | sh
-tailscale up
-```
-
-在 Tailscale Admin Console 中批准子网路由，并启用 HTTPS Certificates 以激活 Serve 的自动 TLS 功能。
 
 ---
 
@@ -215,11 +221,11 @@ tailscale up
 +===========================================================+
 |              Proxmox VE 宿主机 (ServerHan)                 |
 |  PVE 9.1 · 静态 IP 192.168.1.12                           |
-|  Tailscale 子网路由 · HTTPS Serve (:443) · nginx (:8443)  |
+  |  Tailscale 子网路由 · HTTPS Serve (:443)                    |
 |  host-mcp (:9120, iptables 仅允许 LXC 访问)               |
 |===========================================================|
 |                                                           |
-|  +----- Windows VM (待部署) ------------+                  |
+|  +----- Windows VM (已部署) ------------+                  |
 |  |  物理盘直通 + GPU 直通 + Sunshine    |                 |
 |  +--+----------------------------------+                 |
 |     |                                                    |
@@ -253,19 +259,15 @@ tailscale up
 |------|------|
 | PVE 9.1 | ZHITAI TiPlus7100 2TB，ext4 + LVM-thin，UEFI GRUB |
 | 网络 | 静态 IP 192.168.1.12，桥接 vmbr0 |
-| Tailscale | 子网路由 192.168.1.0/24，HTTPS Serve + nginx 反向代理 |
+| Tailscale | 子网路由 192.168.1.0/24，HTTPS Serve |
 | Hermes Agent | LXC 200 (192.168.1.13)，Dashboard、WeChat Gateway、Proxmox MCP (9 tools)、host-mcp (8 tools) |
 | host-mcp | PVE 宿主机运维 MCP，systemd 服务，iptables IP 白名单，sudoers 命令白名单 |
 | WireGuard | 已替换为 Tailscale |
 
 ### 待完成
 
-- [ ] 创建 Windows VM + 物理盘直通 + GPU 直通
-- [ ] 部署 Sunshine / Moonlight 串流
 - [ ] 安装 OpenCode（LXC 容器内并行部署）
-- [ ] 绑定第二个微信机器人
-- [ ] Hermes WebSocket 修复（dashboard TUI 仅限 localhost）
-- [ ] 创建 LXC 项目容器模板（多项目开发）
+- [x] 创建 LXC 项目容器模板（多项目开发，模板 ID: 208）
 
 ---
 
