@@ -1,0 +1,1 @@
+host-mcp ALL=(root) NOPASSWD: /usr/bin/apt update, /usr/bin/apt dist-upgrade -y, /usr/bin/apt autoremove --purge -y, /usr/bin/apt list --upgradable, /usr/bin/systemctl restart *, /usr/bin/journalctl --vacuum-time *

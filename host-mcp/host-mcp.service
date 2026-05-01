@@ -1,0 +1,16 @@
+[Unit]
+Description=Host MCP Server for Hermes Agent
+After=network.target
+
+[Service]
+Type=simple
+User=host-mcp
+WorkingDirectory=/opt/host-mcp
+ExecStart=/opt/host-mcp/venv/bin/python3 /opt/host-mcp/host-mcp.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
