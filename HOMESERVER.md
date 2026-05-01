@@ -428,6 +428,9 @@ tools:
 - [x] Mac LaunchDaemon + 容器 rc.local 开机自启
 
 ### 待完成
+- [ ] PVE 系统更新（apt dist-upgrade）
 - [ ] 创建 Windows VM + 物理盘直通 + GPU 直通
 - [ ] 部署 Sunshine / Moonlight 串流
-- [ ] PVE 系统更新（apt dist-upgrade）
+- [ ] 绑定第二个微信机器人（hermes gateway setup）
+- [ ] Hermes WebSocket 修复（dashboard TUI 目前仅限 localhost）
+- [ ] 安装 OpenCode（可选，LXC 内并行部署）
