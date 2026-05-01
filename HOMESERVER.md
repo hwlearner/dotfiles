@@ -159,7 +159,7 @@ pct enter <新ID>
 opencode web --hostname 0.0.0.0 --port 4096 --password <密码>
 ```
 
-可通过 Tailscale 子网路由或 nginx location 访问 `https://serverhan.tail3fd170.ts.net/project-foo`。
+可通过 Tailscale 子网路由从外网直接访问。
 
 ---
 
