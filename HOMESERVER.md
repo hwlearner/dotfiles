@@ -407,17 +407,27 @@ tools:
 - [x] SSH 密钥部署完毕，root 密码已知
 - [x] PVE Web 面板 (pveproxy) 正常运行
 
-**待完成（物理启动后）**：
-- [ ] 物理启动，确认网卡识别为 lan0
-- [ ] PVE Web 面板访问（https://<IP>:8006）
-- [ ] 配置静态 IP、DNS、NTP
-- [ ] 配置 PVE 订阅/仓库
+**待完成**：
 - [ ] 创建 Windows VM + 物理盘直通 + GPU 直通
 - [ ] 部署 Sunshine + Moonlight
-- [ ] 部署 AI Agent 容器（Hermes / OpenCode）
 
-**物理启动步骤**：
-1. 重启电脑
-2. BIOS/UEFI 选 ZHITAI TiPlus7100 2TB 启动
-3. 启动后检查网络：ip a show vmbr0
-4. SSH 接入或直接 Web 访问 PVE
+---
+
+### Phase 2 ✅ 基础配置与网络（2026-05-01）
+
+**已完成**：
+- [x] 静态 IP 192.168.1.12（vmbr0），DNS 192.168.1.1
+- [x] PVE 源切换为 USTC no-subscription
+- [x] 创建用户 han（zsh + sudo NOPASSWD）
+- [x] mihomo 代理（Clash Meta v1.19.24）→ 系统代理已配置
+- [x] Hermes Agent v0.12.0 → LXC 容器 200（ai-agent, 192.168.1.13）
+- [x] Hermes WeChat 网关 7×24 运行
+- [x] Hermes Dashboard（http://10.0.0.2:9119，WireGuard 隧道）
+- [x] WireGuard P2P 隧道（Mac ↔ LXC 容器，10.0.0.0/24）
+- [x] Proxmox MCP 集成（9 个工具：list_vms, start/stop VM, snapshot 等）
+- [x] Mac LaunchDaemon + 容器 rc.local 开机自启
+
+### 待完成
+- [ ] 创建 Windows VM + 物理盘直通 + GPU 直通
+- [ ] 部署 Sunshine / Moonlight 串流
+- [ ] PVE 系统更新（apt dist-upgrade）
