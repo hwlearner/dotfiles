@@ -1,0 +1,295 @@
+[
+  {
+    "key": "ctrl+d",
+    "command": "-editor.action.addSelectionToNextFindMatch",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+d",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode != 'insert'",
+    "args": "<C-d>"
+  },
+  {
+    "key": "ctrl+u",
+    "command": "-cursorUndo",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+u",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode != 'insert'",
+    "args": "<C-u>"
+  },
+  {
+    "key": "ctrl+f",
+    "command": "-actions.find",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+f",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode != 'insert'",
+    "args": "<C-f>"
+  },
+  {
+    "key": "ctrl+b",
+    "command": "-workbench.action.toggleSidebarVisibility",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+b",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode != 'insert'",
+    "args": "<C-b>"
+  },
+  {
+    "key": "ctrl+a",
+    "command": "-editor.action.selectAll",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+a",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode != 'insert'",
+    "args": "<C-a>"
+  },
+  {
+    "key": "ctrl+x",
+    "command": "-editor.action.clipboardCutAction",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+x",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode != 'insert'",
+    "args": "<C-x>"
+  },
+  {
+    "key": "ctrl+y",
+    "command": "-redo",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+y",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode != 'insert'",
+    "args": "<C-y>"
+  },
+  {
+    "key": "ctrl+o",
+    "command": "-workbench.action.files.openFile",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+o",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode != 'insert'",
+    "args": "<C-o>"
+  },
+  {
+    "key": "ctrl+v",
+    "command": "-editor.action.clipboardPasteAction",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+v",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode != 'insert'",
+    "args": "<C-v>"
+  },
+  {
+    "key": "ctrl+g",
+    "command": "-workbench.action.gotoLine",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+g",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode != 'insert'",
+    "args": "<C-g>"
+  },
+  {
+    "key": "ctrl+w",
+    "command": "-workbench.action.closeActiveEditor",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+w",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode != 'insert'",
+    "args": "<C-w>"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "-editor.emmet.action.expandAbbreviation",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode != 'insert'",
+    "args": "<C-e>"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "-workbench.action.togglePanel",
+    "when": "editorTextFocus && neovim.mode != 'insert'"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode != 'insert'",
+    "args": "<C-j>"
+  },
+  {
+    "key": "ctrl+k",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.mode == 'insert'",
+    "args": "<C-k>"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "workbench.action.togglePanel",
+    "when": "editorTextFocus && neovim.mode == 'insert'"
+  },
+
+  {
+    "key": "ctrl+d",
+    "command": "editor.action.addSelectionToNextFindMatch",
+    "when": "editorTextFocus && neovim.mode == 'insert'"
+  },
+
+  {
+    "key": "ctrl+shift+p",
+    "command": "workbench.action.showCommands"
+  },
+  {
+    "key": "ctrl+p",
+    "command": "workbench.action.quickOpen"
+  },
+  {
+    "key": "ctrl+shift+f",
+    "command": "workbench.action.findInFiles"
+  },
+  {
+    "key": "ctrl+shift+h",
+    "command": "workbench.action.replaceInFiles"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "workbench.action.togglePanel"
+  },
+  {
+    "key": "ctrl+`",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "ctrl+shift+`",
+    "command": "workbench.action.terminal.new"
+  },
+  {
+    "key": "ctrl+shift+w",
+    "command": "workbench.action.closeWindow"
+  },
+  {
+    "key": "ctrl+shift+t",
+    "command": "workbench.action.reopenClosedEditor"
+  },
+  {
+    "key": "ctrl+tab",
+    "command": "workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup"
+  },
+  {
+    "key": "ctrl+shift+tab",
+    "command": "workbench.action.quickOpenLeastRecentlyUsedEditorInGroup"
+  },
+  {
+    "key": "ctrl+\\",
+    "command": "workbench.action.splitEditor"
+  },
+  {
+    "key": "ctrl+1",
+    "command": "workbench.action.focusFirstEditorGroup"
+  },
+  {
+    "key": "ctrl+2",
+    "command": "workbench.action.focusSecondEditorGroup"
+  },
+  {
+    "key": "ctrl+3",
+    "command": "workbench.action.focusThirdEditorGroup"
+  },
+  {
+    "key": "ctrl+4",
+    "command": "workbench.action.focusFourthEditorGroup"
+  },
+  {
+    "key": "ctrl+shift+e",
+    "command": "workbench.explorer.fileView.focus"
+  },
+  {
+    "key": "ctrl+shift+g",
+    "command": "workbench.view.scm"
+  },
+  {
+    "key": "ctrl+shift+x",
+    "command": "workbench.view.extensions"
+  },
+  {
+    "key": "ctrl+shift+d",
+    "command": "workbench.view.debug"
+  },
+  {
+    "key": "ctrl+k ctrl+c",
+    "command": "editor.action.addCommentLine"
+  },
+  {
+    "key": "ctrl+k ctrl+u",
+    "command": "editor.action.removeCommentLine"
+  },
+  {
+    "key": "ctrl+/",
+    "command": "editor.action.commentLine"
+  },
+  {
+    "key": "ctrl+f2",
+    "command": "editor.action.changeAll"
+  },
+  {
+    "key": "ctrl+.",
+    "command": "editor.action.quickFix"
+  },
+  {
+    "key": "f2",
+    "command": "editor.action.rename"
+  },
+  {
+    "key": "f12",
+    "command": "editor.action.revealDefinition"
+  },
+  {
+    "key": "ctrl+f12",
+    "command": "editor.action.goToImplementation"
+  },
+  {
+    "key": "shift+f12",
+    "command": "editor.action.referenceSearch.trigger"
+  },
+  {
+    "key": "f8",
+    "command": "editor.action.marker.next"
+  },
+  {
+    "key": "shift+f8",
+    "command": "editor.action.marker.prev"
+  },
+  {
+    "key": "ctrl+k z",
+    "command": "workbench.action.toggleZenMode"
+  },
+  {
+    "key": "ctrl+g",
+    "command": "workbench.action.gotoLine"
+  }
+]
