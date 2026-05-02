@@ -22,3 +22,7 @@ vscode/extensions/
 nvim/.lazy/
 nvim/lazy/
 nvim/.local/
+pve.md
+
+# PVE homelab private overrides
+pve/*.private.*

@@ -1,0 +1,61 @@
+# Clash / Mihomo Configuration
+# Copy to /etc/mihomo/config.yaml on the LXC
+#
+# Private fields (subscription URL) should be placed in
+# mihomo.private.yaml and overridden locally.
+
+mixed-port: 7890
+allow-lan: true
+log-level: info
+external-controller: 0.0.0.0:9090
+external-ui: /etc/mihomo/ui
+
+dns:
+  enable: true
+  listen: 0.0.0.0:5353
+  enhanced-mode: redir-host
+  default-nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+  nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+  fake-ip-filter:
+    - '*.lan'
+    - '+.gstatic.com'
+
+proxy-providers:
+  <Provider>:
+    type: http
+    url: <SUBSCRIPTION_URL>   # 覆写于 mihomo.private.yaml
+    interval: 3600
+    path: /etc/mihomo/proxy-providers/<provider>.yaml
+    health-check:
+      enable: true
+      interval: 600
+      url: http://www.gstatic.com/generate_204
+
+proxy-groups:
+  - name: Auto
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    use:
+      - <Provider>
+  - name: Fallback
+    type: fallback
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    use:
+      - <Provider>
+  - name: Proxy
+    type: select
+    proxies:
+      - Auto
+      - Fallback
+      - DIRECT
+    use:
+      - <Provider>
+
+rules:
+  - MATCH,Proxy
