@@ -1,15 +1,33 @@
 {
+  "icon_theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Mocha"
+  },
+  "agent": {
+    "default_model": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "enable_thinking": true,
+      "effort": "high"
+    },
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "agent_servers": {
+    
+  },
   "base_keymap": "VSCode",
   "vim_mode": true,
   "theme": {
     "mode": "system",
-    "light": "Catppuccin Iced Latte (Blur) [Heavy]",
-    "dark": "Catppuccin Mocha (Blur) [Heavy]"
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Mocha"
   },
   "buffer_font_family": "Maple Mono NL NF CN",
   "buffer_font_size": 14,
   "ui_font_size": 14,
-  "agent_font_size": 14,
+  "agent_ui_font_size": 14,
   "relative_line_numbers": "enabled",
   "autosave": "off",
   "format_on_save": "off",
