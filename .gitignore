@@ -26,3 +26,12 @@ pve.md
 
 # PVE homelab private overrides
 pve/*.private.*
+
+# Git deploy keys
+pve/git-deploy-key
+pve/git-deploy-key.pub
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.egg-info/

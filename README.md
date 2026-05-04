@@ -118,30 +118,7 @@ brew bundle --file=Brewfile
 | **存储 A (系统)** | 2TB NVMe SSD (PVE 宿主机) | 高速响应，专用于宿主机和 VM 系统 |
 | **存储 B (游戏)** | 4TB NVMe SSD (整盘直通 Windows VM) | 原生性能，支持**虚拟机启动**和**物理机启动**，保证反作弊游戏兼容 |
 | **存储 C (数据)** | 大容量机械硬盘 (直通 NAS VM) | 低成本大容量数据仓库，存放影音和备份 |
-| **显卡 A** | Intel 核显或亮机卡 | 宿主机基本显示输出 |
-| **显卡 B** | NVIDIA RTX 4060+ 游戏卡 | **直通 Windows VM**，提供原生游戏性能 |
-
-## 1. GPU 直通配置
-
-### 1.1 启用 IOMMU
-
-`/etc/default/grub` 添加 `intel_iommu=on iommu=pt`（Intel）或 `amd_iommu=on iommu=pt`（AMD），然后 `update-grub`。
-
-### 1.2 加载 VFIO 模块
-
-`/etc/modules` 添加 `vfio`、`vfio_iommu_type1`、`vfio_pci`、`vfio_virqfd`，执行 `update-initramfs -u -k all` 并重启。
-
-### 1.3 隔离直通显卡
-
-用 `lspci -nn | grep -i nvidia` 获取 GPU 及 Audio 设备的 PCI ID，创建 `/etc/modprobe.d/vfio.conf`：
-
-```
-options vfio-pci ids=<GPU_VEN_DEV_ID> disable_vga=1
-```
-
-重新生成 initramfs 并重启后，验证驱动为 `vfio-pci`。
-
----
+| **显卡（已通）** | NVIDIA RTX 4080 SUPER | **直通 Windows VM**，Sunshine 串流，完美原生性能 |
 
 ---
 
@@ -163,9 +140,27 @@ options vfio-pci ids=<GPU_VEN_DEV_ID> disable_vga=1
 | 专用 VM | 需要 GPU 直通做本地推理时选用 |
 | 宿主机直接安装 | 不推荐 |
 
-### 4.2 MCP 集成 Proxmox
+### 4.2 MCP 接口总览
 
-通过 Proxmox API Token + MCP Server，让 Hermes 调用 Proxmox API 执行 VM 管理、快照备份、资源监控等操作。
+Hermes 通过 Proxmox API Token + MCP Server 管理整个集群，当前注册了 **20 个工具**：
+
+| 类别 | MCP 工具 | 说明 |
+|------|----------|------|
+| **Proxmox** | `list_nodes` | 列出所有节点 |
+| | `list_vms` | 列出所有 VM |
+| | `vm_status` | 查看 VM 状态 |
+| | `node_status` | 节点资源使用 |
+| | `start_vm` / `stop_vm` | 启停 VM |
+| | `create_snapshot` / `list_snapshots` / `delete_snapshot` | VM 快照管理 |
+| | `guest_exec` | Windows VM 内执行 PowerShell（通过 QEMU GA） |
+| **Clash** | `clash_proxies` | 查看所有节点延迟和当前策略 |
+| | `clash_set_proxy` | 切换 Clash 策略组到指定节点 |
+| **Windows** | `win_ssh` | 通过 SSH 在 Windows 上执行命令（han 用户） |
+| **网络** | `ping_test` | 从 Hermes LXC ping 任意主机 |
+| **NAS** | `nas_status` | 查看 NAS 磁盘用量和服务状态 |
+| | `nas_disk` | 查看 NAS 存储设备列表 |
+| **OpenCode** | `opencode_run` | 在开发环境 LXC 中执行命令 |
+| **备份** | `list_backups` | 查看 PVE 备份列表 |
 
 ### 4.3 Host-MCP：pve01 宿主机运维工具
 
@@ -213,6 +208,7 @@ opencode web --hostname 0.0.0.0 --port 4096 --password <密码>
 | 分类 | 内容 |
 |------|------|
 | **基础** | git, curl, build-essential, cmake, ninja |
+| **用户** | 非 root 账号 `han` (sudo NOPASSWD)，日常开发用此账号 |
 | **运行时** | Node.js 18, Python 3.12, OpenJDK 21, Rust 1.95, Lua 5.4, Cangjie 1.1.0 |
 | **编辑器服务** | OpenCode (serve :4096), code-server (无密码 :8080)，rc.local 开机自启 |
 | **编辑器** | neovim 0.12 + LazyVim（LSP / DAP / 格式化全套） |
@@ -242,28 +238,25 @@ opencode web --hostname 0.0.0.0 --port 4096 --password <密码>
 
 ## 5. NAS 文件存储
 
-### 5.1 方案选择
+### 5.1 方案
 
-| 方案 | 说明 |
+Debian 12 LXC，**Cockpit** Web 管理 + **Samba** 文件共享。
+
+| 功能 | 说明 |
 |------|------|
-| **飞牛 OS (fnOS)**（推荐） | 国产 NAS 系统，UI 友好，SMB/DLNA/下载一站搞定 |
-| **TrueNAS Scale** | 功能最强，ZFS + SMB/iSCSI/Apps，但吃资源 |
-| **Debian LXC + Samba** | 极简轻量，仅 SMB 共享，配合 bind mount 挂载宿主机目录 |
+| **Web 面板** | `https://192.168.1.59:9090`（Cockpit） |
+| **SMB 共享** | `smb://192.168.1.59/nas`（匿名读写） |
+| **自动解压** | 拖入 `.zip`/`.rar`/`.tar.gz` 自动解压到同名子目录，支持备用密码 |
+| **后续加硬盘** | 直通物理盘后手动挂载，通过 Cockpit 管理 |
 
-### 5.2 部署要点
-
-- 大容量机械硬盘直通给 NAS VM（`qm set <ID> --sataX /dev/disk/by-id/...`）
-- 网络用桥接模式，局域网内设备直接访问 SMB 共享
-- 配合 **DLNA** 让电视/盒子直接播放 NAS 影片
-- 可选部署 **Transmission** / **qBittorrent** 下载服务
-
-### 5.3 推荐架构
+### 5.2 部署架构
 
 ```
-NAS VM
-├── SMB 文件共享     → 鸿蒙全家桶 / Mac / Windows
-├── DLNA 媒体服务    → 华为智慧屏 / 电视盒子
-└── Transmission     → PT/BT 下载
+NAS (LXC 300)
+├── Cockpit Web UI → 浏览器管理
+├── SMB 文件共享   → 鸿蒙 / Mac / Windows
+├── 自动解压服务   → inotify 监听 + unzip/unrar
+└── 1TB 虚拟盘     → 后续可加物理盘直通
 ```
 
 ---
@@ -356,7 +349,7 @@ Hermes Dashboard (:9119)
 
 | 服务 | 地址 |
 |------|------|
-| Hermes Dashboard (HTTPS) | `https://<your-tailscale-hostname>.ts.net/` |
+| Hermes Dashboard (HTTPS) | `https://<your-tailscale-hostname>/` |
 | PVE Web 面板 | `https://10.0.0.12:8006` |
 | Home Assistant | `https://10.0.0.17:8123` |
 
@@ -420,10 +413,10 @@ Hermes Dashboard (:9119)
 |  |  项目 A (10.0.0.14)                                |
 |  |  · OpenCode Web (:4096)                               |
 |  +--------------------------------+                      |
-|  +--+---------------------------- VM (规划中)            |
-|  |  NAS / 飞牛 OS (10.0.0.16)                         |
-|  |  · SMB 文件共享 / DLNA 媒体服务                       |
-|  |  · Transmission 下载                                  |
+|  +--+---------------------------- LXC 300 (已部署)          |
+|  |  NAS (192.168.1.59)                                    |
+|  |  · Cockpit Web (:9090) / SMB 共享                       |
+|  |  · 1TB 存储（可加物理盘直通）                            |
 |  +--------------------------------+                      |
 |  +--+---------------------------- VM (规划中)            |
 |  |  Home Assistant (10.0.0.17)                        |
@@ -451,20 +444,22 @@ Hermes Dashboard (:9119)
 
 | 组件 | 详情 |
 |------|------|
-| PVE 9.1 | NVMe 2TB，ext4 + LVM-thin，UEFI GRUB |
+| PVE 9.1 | NVMe 2TB，ext4 + LVM-thin，UEFI GRUB，内核 6.17.x |
 | 网络 | 静态 IP 10.0.0.12，桥接 vmbr0 |
 | Tailscale | 子网路由 10.0.0.0/24，HTTPS Serve |
 | Hermes Agent | LXC 200 (10.0.0.13)，Dashboard、WeChat Gateway、Proxmox MCP、host-mcp |
 | host-mcp | PVE 宿主机运维 MCP，systemd 服务，iptables IP 白名单，sudoers 命令白名单 |
-| Windows VM | 物理盘直通 + VirtIO SCSI + VirtIO 网卡 + GPU 直通 + Sunshine 串流 |
+| Windows VM | 物理盘直通 + VirtIO SCSI + VirtIO 网卡 + RTX 4080 直通 + Sunshine 串流 |
+| NAS (CasaOS) | LXC 300 (192.168.1.59)，Cockpit Web 管理 + SMB 文件共享，1TB 存储 |
 | LXC 项目模板 | 预装 OpenCode、Neovim LazyVim、多语言运行时的开发环境模板 |
+| SSH 加固 | 已禁用密码登录，仅密钥认证 |
 
 ### 待完成
 
 - [x] 安装 OpenCode（LXC 容器内并行部署）
-- [ ] 部署 NAS VM（飞牛 OS / TrueNAS）
+- [x] 部署 NAS（Cockpit + Samba，LXC 300）
+- [x] 部署 Clash / Mihomo 透明网关（含日本节点 + ChatGPT 规则）
 - [ ] 部署 Home Assistant VM
-- [x] 部署 Clash / Mihomo 透明网关
 - [ ] 配置 Proxmox Backup Server (PBS) 备份策略
 - [ ] 配置 3-2-1 异地备份
 
@@ -475,7 +470,7 @@ Hermes Dashboard (:9119)
 - **Windows 物理盘直通**：双系统裸机启动 + 虚拟机模式，系统状态完全一致
 - **GPU 直通**：原生游戏性能 + Sunshine 全屋串流
 - **Hermes & OpenCode**：7×24 在线 AI 编码与自动化
-- **NAS**：飞牛 OS / TrueNAS 提供 SMB 文件共享和媒体服务
+- **NAS**：Cockpit + Samba LXC，SMB 共享 + 自动解压
 - **Home Assistant**：华为智能家居中枢，跨品牌联动
 - **Clash 网关**：全屋透明代理，智能分流
 - **MCP 宿主机运维**：AI 通过 Proxmox API 管理虚拟化环境
