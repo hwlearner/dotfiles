@@ -1,11 +1,12 @@
-export RUSTUP_DIST_SERVER=https://rsproxy.cn #ckrust
-export RUSTUP_UPDATE_ROOT=https://rsproxy.cn/rustup #ckrust
+export RUSTUP_DIST_SERVER=https://repo.huaweicloud.com/rust #ckrust
+export RUSTUP_UPDATE_ROOT=https://repo.huaweicloud.com/rust/rustup #ckrust
 
 case "$(uname -s)" in
   Darwin)
-  export HOMEBREW_PIP_INDEX_URL=https://mirrors.cloud.tencent.com/pypi/simple #ckbrew
-  export HOMEBREW_API_DOMAIN=https://mirrors.cloud.tencent.com/homebrew-bottles/api #ckbrew
-  export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.cloud.tencent.com/homebrew-bottles #ckbrew
+  export HOMEBREW_PIP_INDEX_URL=https://repo.huaweicloud.com/repository/pypi/simple #ckbrew
+  export HOMEBREW_API_DOMAIN=https://repo.huaweicloud.com/homebrew-bottles/api #ckbrew
+  export HOMEBREW_BOTTLE_DOMAIN=https://repo.huaweicloud.com/homebrew-bottles #ckbrew
+  export npm_config_registry=https://repo.huaweicloud.com/repository/npm/ #cknpm
   if [ -x /opt/homebrew/bin/brew ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)" #ckbrew
   fi

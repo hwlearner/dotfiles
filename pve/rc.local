@@ -1,0 +1,7 @@
+#!/bin/bash
+mkdir -p /workspace
+sleep 5
+if [ -f /root/.opencode/bin/opencode ]; then
+  cd /workspace && /root/.opencode/bin/opencode serve --hostname 0.0.0.0 --port 4096 > /var/log/opencode-web.log 2>&1 &
+fi
+exit 0

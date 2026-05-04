@@ -80,7 +80,7 @@ async def mcp_endpoint(request: Request):
     method = body.get("method", "")
     req_id = body.get("id")
     logger.info(f"MCP request: {method}")
-
+    
     if method == "initialize":
         return make_response(req_id, {
             "protocolVersion": "2024-11-05",

@@ -1,132 +1,121 @@
-# Clash / Mihomo Configuration — 透明网关优化版
-# Copy to /etc/mihomo/config.yaml on LXC
-#
-# Private fields (subscription URL) → pve/mihomo.private.yaml
-
-mixed-port: 7890
-tproxy-port: 7891
 allow-lan: true
 bind-address: 0.0.0.0
-mode: rule
-log-level: info
-ipv6: false
-external-controller: 0.0.0.0:9090
-external-ui: /etc/mihomo/ui
-
-tun:
-  enable: true
-  stack: system
-  dns-hijack:
-    - any:53
-  auto-route: true
-  auto-redirect: true
-
 dns:
-  enable: true
-  listen: 0.0.0.0:5353
-  enhanced-mode: fake-ip
-  fake-ip-range: 198.18.0.1/16
   default-nameserver:
-    - 223.5.5.5
-    - 114.114.114.114
-  nameserver:
-    - https://doh.pub/dns-query
-    - https://dns.alidns.com/dns-query
+  - 223.5.5.5
+  - 114.114.114.114
+  enable: true
+  enhanced-mode: fake-ip
+  fake-ip-filter:
+  - +.continue.dev
+  - '*.lan'
+  - '*.local'
+  - localhost.ptlogin2.qq.com
+  - +.srv.nintendo.net
+  - +.stun.playstation.net
+  - +.stun.sony.net
+  - msftncsi.com
+  - '*.msftncsi.com'
+  - +.jfdddy.net
+  - +.jf88.co
+  fake-ip-range: 198.18.0.1/16
   fallback:
-    - tls://8.8.4.4:853
-    - https://1.1.1.1/dns-query
+  - tls://1.12.12.12:853
   fallback-filter:
     geoip: true
     geoip-code: CN
-  nameserver-policy:
-    "geosite:cn,geosite:private": https://doh.pub/dns-query
-  fake-ip-filter:
-    - '*.lan'
-    - '*.local'
-    - localhost.ptlogin2.qq.com
-    - +.srv.nintendo.net
-    - +.stun.playstation.net
-    - msftncsi.com
-    - '*.msftncsi.com'
-
-sniffer:
-  enable: true
-  sniffing:
-    - tls
-    - http
-  force-domain:
-    - "*.netflix.com"
-    - "*.youtube.com"
-
+  listen: 0.0.0.0:5353
+  nameserver:
+  - https://doh.pub/dns-query
+  - tls://223.5.5.5:853
+external-controller: 0.0.0.0:9090
+external-ui: /etc/mihomo/ui
+ipv6: false
+log-level: info
+mixed-port: 7890
+mode: rule
+proxy-groups:
+- filter: 日本|JP|Tokyo
+  interval: 300
+  name: 日本
+  tolerance: 50
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  use:
+  - Provider
+- interval: 300
+  name: Auto
+  tolerance: 50
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  use:
+  - Provider
+- interval: 300
+  name: Fallback
+  type: fallback
+  url: http://www.gstatic.com/generate_204
+  use:
+  - Provider
+- interval: 300
+  name: LoadBalance
+  strategy: consistent-hashing
+  type: load-balance
+  url: http://www.gstatic.com/generate_204
+  use:
+  - Provider
+- name: Proxy
+  proxies:
+  - Auto
+  - Fallback
+  - LoadBalance
+  - DIRECT
+  type: select
+  use:
+  - Provider
 proxy-providers:
-  <Provider>:
-    type: http
-    url: <SUBSCRIPTION_URL>
-    interval: 3600
-    path: /etc/mihomo/proxy-providers/<provider>.yaml
+  Provider:
     health-check:
       enable: true
       interval: 600
       url: http://www.gstatic.com/generate_204
-
-proxy-groups:
-  - name: 日本
-    type: url-test
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    tolerance: 50
-    use:
-      - <Provider>
-    filter: "日本|JP|Tokyo"
-  - name: Auto
-    type: url-test
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    tolerance: 50
-    use:
-      - <Provider>
-  - name: Fallback
-    type: fallback
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    use:
-      - <Provider>
-  - name: LoadBalance
-    type: load-balance
-    strategy: consistent-hashing
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    use:
-      - <Provider>
-  - name: Proxy
-    type: select
-    proxies:
-      - Auto
-      - Fallback
-      - LoadBalance
-      - DIRECT
-    use:
-      - <Provider>
-
+    interval: 3600
+    path: /etc/mihomo/proxy-providers/provider.yaml
+    type: http
+    url: https://jfdddy.net/link/VTBaHMehkBM7MHTo?clash=1
 rules:
-  - GEOSITE,category-ads-all,REJECT
-  - GEOSITE,private,DIRECT
-  - GEOSITE,microsoft@cn,DIRECT
-  - GEOSITE,apple-cn,DIRECT
-  - GEOSITE,google-cn,DIRECT
-  - GEOSITE,category-games@cn,DIRECT
-  - GEOSITE,speedtest,DIRECT
-  - DOMAIN-SUFFIX,deepseek.com,DIRECT
-  - DOMAIN-SUFFIX,minimax.com,DIRECT
-  - DOMAIN-SUFFIX,hailuoai.com,DIRECT
-  - DOMAIN-SUFFIX,ustc.edu.cn,DIRECT
-  - DOMAIN-SUFFIX,debian.org,DIRECT
-  - DOMAIN-SUFFIX,chatgpt.com,日本
-  - DOMAIN-SUFFIX,openai.com,日本
-  - DOMAIN-SUFFIX,oaistatic.com,日本
-  - DOMAIN-SUFFIX,oaiusercontent.com,日本
-  - GEOSITE,netflix,Proxy
-  - GEOSITE,youtube,Proxy
-  - GEOSITE,geolocation-!cn,Proxy
-  - GEOIP,CN,DIRECT
-  - MATCH,Proxy
+- GEOSITE,category-ads-all,REJECT
+- GEOSITE,private,DIRECT
+- GEOSITE,microsoft@cn,DIRECT
+- GEOSITE,apple-cn,DIRECT
+- GEOSITE,google-cn,DIRECT
+- GEOSITE,category-games@cn,DIRECT
+- GEOSITE,speedtest,DIRECT
+- DOMAIN-SUFFIX,deepseek.com,DIRECT
+- DOMAIN-SUFFIX,minimax.com,DIRECT
+- DOMAIN-SUFFIX,hailuoai.com,DIRECT
+- DOMAIN-SUFFIX,ustc.edu.cn,DIRECT
+- DOMAIN-SUFFIX,debian.org,DIRECT
+- GEOSITE,netflix,Proxy
+- GEOSITE,youtube,Proxy
+- GEOSITE,geolocation-!cn,Proxy
+- DOMAIN-SUFFIX,chatgpt.com,日本
+- DOMAIN-SUFFIX,openai.com,日本
+- DOMAIN-SUFFIX,oaistatic.com,日本
+- DOMAIN-SUFFIX,oaiusercontent.com,日本
+- GEOIP,CN,DIRECT
+- MATCH,Proxy
+secret: ''
+sniffer:
+  enable: true
+  force-domain: []
+  sniffing:
+  - tls
+  - http
+tproxy-port: 7891
+tun:
+  auto-redirect: true
+  auto-route: true
+  dns-hijack:
+  - any:53
+  enable: false
+  stack: gvisor
