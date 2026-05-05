@@ -29,6 +29,7 @@ font-family = Maple Mono NL NF CN
 theme = light:Catppuccin Latte,dark:Catppuccin Mocha
 window-padding-x = 6
 macos-titlebar-style = hidden
+window-decoration = false
 cursor-style = block
 cursor-style-blink = false
 background-opacity = 0.72
