@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.han.tmux-theme-watcher</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/han/.local/bin/tmux-catppuccin</string>
+    <string>watch</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>HOME</key>
+    <string>/Users/han</string>
+  </dict>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/Users/han/.config/tmux/theme-watcher.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/han/.config/tmux/theme-watcher.err.log</string>
+</dict>
+</plist>

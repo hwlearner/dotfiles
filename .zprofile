@@ -3,9 +3,10 @@ export RUSTUP_UPDATE_ROOT=https://repo.huaweicloud.com/rust/rustup #ckrust
 
 case "$(uname -s)" in
   Darwin)
-  export HOMEBREW_PIP_INDEX_URL=https://repo.huaweicloud.com/repository/pypi/simple #ckbrew
-  export HOMEBREW_API_DOMAIN=https://repo.huaweicloud.com/homebrew-bottles/api #ckbrew
-  export HOMEBREW_BOTTLE_DOMAIN=https://repo.huaweicloud.com/homebrew-bottles #ckbrew
+  # brew mirrors — 注释掉，走代理直连
+  # export HOMEBREW_PIP_INDEX_URL=https://repo.huaweicloud.com/repository/pypi/simple
+  # export HOMEBREW_API_DOMAIN=https://repo.huaweicloud.com/homebrew-bottles/api
+  # export HOMEBREW_BOTTLE_DOMAIN=https://repo.huaweicloud.com/homebrew-bottles
   export npm_config_registry=https://repo.huaweicloud.com/repository/npm/ #cknpm
   if [ -x /opt/homebrew/bin/brew ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)" #ckbrew
