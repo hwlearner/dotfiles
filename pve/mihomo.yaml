@@ -82,28 +82,83 @@ proxy-providers:
     path: /etc/mihomo/proxy-providers/provider.yaml
     type: http
     url: https://jfdddy.net/link/VTBaHMehkBM7MHTo?clash=1
+
+rule-providers:
+  reject:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt
+    interval: 86400
+    path: /etc/mihomo/rules/reject.yaml
+  direct:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt
+    interval: 86400
+    path: /etc/mihomo/rules/direct.yaml
+  private:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt
+    interval: 86400
+    path: /etc/mihomo/rules/private.yaml
+  proxy:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt
+    interval: 86400
+    path: /etc/mihomo/rules/proxy.yaml
+  apple:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt
+    interval: 86400
+    path: /etc/mihomo/rules/apple.yaml
+  icloud:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt
+    interval: 86400
+    path: /etc/mihomo/rules/icloud.yaml
+  cncidr:
+    type: http
+    behavior: ipcidr
+    url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt
+    interval: 86400
+    path: /etc/mihomo/rules/cncidr.yaml
+
 rules:
-- GEOSITE,category-ads-all,REJECT
-- GEOSITE,private,DIRECT
-- GEOSITE,microsoft@cn,DIRECT
-- GEOSITE,apple-cn,DIRECT
-- GEOSITE,google-cn,DIRECT
-- GEOSITE,category-games@cn,DIRECT
-- GEOSITE,speedtest,DIRECT
-- DOMAIN-SUFFIX,deepseek.com,DIRECT
-- DOMAIN-SUFFIX,minimax.com,DIRECT
-- DOMAIN-SUFFIX,hailuoai.com,DIRECT
-- DOMAIN-SUFFIX,ustc.edu.cn,DIRECT
-- DOMAIN-SUFFIX,debian.org,DIRECT
-- GEOSITE,netflix,Proxy
-- GEOSITE,youtube,Proxy
-- GEOSITE,geolocation-!cn,Proxy
-- DOMAIN-SUFFIX,chatgpt.com,日本
-- DOMAIN-SUFFIX,openai.com,日本
-- DOMAIN-SUFFIX,oaistatic.com,日本
-- DOMAIN-SUFFIX,oaiusercontent.com,日本
-- GEOIP,CN,DIRECT
-- MATCH,Proxy
+  # 自定义（高优）
+  - DOMAIN-SUFFIX,deepseek.com,DIRECT
+  - DOMAIN-SUFFIX,minimax.com,DIRECT
+  - DOMAIN-SUFFIX,hailuoai.com,DIRECT
+  - DOMAIN-SUFFIX,ustc.edu.cn,DIRECT
+  - DOMAIN-SUFFIX,debian.org,DIRECT
+  - DOMAIN-SUFFIX,chatgpt.com,日本
+  - DOMAIN-SUFFIX,openai.com,日本
+  - DOMAIN-SUFFIX,oaistatic.com,日本
+  - DOMAIN-SUFFIX,oaiusercontent.com,日本
+  # 社区规则集
+  - RULE-SET,reject,REJECT
+  - RULE-SET,private,DIRECT
+  - RULE-SET,apple,DIRECT
+  - RULE-SET,icloud,DIRECT
+  - RULE-SET,direct,DIRECT
+  - RULE-SET,proxy,Proxy
+  - RULE-SET,cncidr,DIRECT
+  # GEOSITE 兜底
+  - GEOSITE,category-ads-all,REJECT
+  - GEOSITE,private,DIRECT
+  - GEOSITE,microsoft@cn,DIRECT
+  - GEOSITE,apple-cn,DIRECT
+  - GEOSITE,google-cn,DIRECT
+  - GEOSITE,category-games@cn,DIRECT
+  - GEOSITE,speedtest,DIRECT
+  - GEOSITE,netflix,Proxy
+  - GEOSITE,youtube,Proxy
+  - GEOSITE,geolocation-!cn,Proxy
+  - GEOIP,CN,DIRECT
+  - MATCH,Proxy
 secret: ''
 sniffer:
   enable: true
