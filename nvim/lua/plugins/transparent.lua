@@ -1,12 +1,5 @@
 return {
   {
-    "folke/tokyonight.nvim",
-    optional = true,
-    opts = {
-      transparent = true,
-    },
-  },
-  {
     "catppuccin/nvim",
     name = "catppuccin",
     optional = true,
@@ -20,7 +13,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = function(_, opts)
-      opts.colorscheme = opts.colorscheme or "tokyonight"
+      opts.colorscheme = opts.colorscheme or "catppuccin"
 
       local transparent_groups = {
         "Normal",
