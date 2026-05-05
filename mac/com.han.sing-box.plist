@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.han.sing-box</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/sing-box</string>
+    <string>run</string>
+    <string>--config</string>
+    <string>/Users/han/.config/sing-box/config.json</string>
+    <string>--directory</string>
+    <string>/Users/han/.config/sing-box</string>
+  </array>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>HOME</key>
+    <string>/Users/han</string>
+    <!-- sing-box 1.13 deprecation workarounds (will be removed in 1.14.0) -->
+    <key>ENABLE_DEPRECATED_LEGACY_DNS_SERVERS</key>
+    <string>true</string>
+    <key>ENABLE_DEPRECATED_OUTBOUND_DNS_RULE_ITEM</key>
+    <string>true</string>
+    <key>ENABLE_DEPRECATED_MISSING_DOMAIN_RESOLVER</key>
+    <string>true</string>
+  </dict>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>KeepAlive</key>
+  <dict>
+    <key>SuccessfulExit</key>
+    <false/>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>/Users/han/.config/sing-box/sing-box.stdout.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/Users/han/.config/sing-box/sing-box.stderr.log</string>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/han</string>
+</dict>
+</plist>
