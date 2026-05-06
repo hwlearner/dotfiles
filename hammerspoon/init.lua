@@ -48,6 +48,7 @@ if state.ghosttyWinFilter then
 end
 clearPendingSync()
 state.lastGhosttyTitle = nil
+state.lastGhosttyRouteKey = nil
 
 local function targetIsActive(target)
   if target.sourceID and hs.keycodes.currentSourceID() == target.sourceID then
@@ -74,10 +75,14 @@ local function frontmostBundleID()
   return app and app:bundleID() or nil
 end
 
+local function ghosttyTitleWantsPinyin(title)
+  return title:find("π", 1, true) ~= nil
+end
+
 --- Switch input for a Ghostty window by reading its title text.
---- - Title contains "deepseek" -> Pinyin
+--- - Title contains "π" -> Pinyin
 --- - Otherwise (tmux, shell, etc.) -> ABC
-local function switchInputForGhosttyWindow()
+local function switchInputForGhosttyWindow(force)
   if frontmostBundleID() ~= "com.mitchellh.ghostty" then return end
 
   local win = hs.window.focusedWindow()
@@ -97,8 +102,14 @@ local function switchInputForGhosttyWindow()
     log.i("Ghostty title: " .. tostring(title))
   end
 
+  local routeKey = tostring(win:id() or "?") .. "\n" .. tostring(title or "")
+  if not force and state.lastGhosttyRouteKey == routeKey then
+    return
+  end
+  state.lastGhosttyRouteKey = routeKey
+
   if title and type(title) == "string" and title ~= "" then
-    if title:lower():find("deepseek") then
+    if ghosttyTitleWantsPinyin(title) then
       local target = { sourceID = "com.apple.inputmethod.SCIM.ITABC", label = "Pinyin - ABC" }
       if not targetIsActive(target) and applyTarget(target) then
         log.i("Ghostty [" .. title .. "] -> Pinyin")
@@ -121,11 +132,11 @@ local function switchInputForGhosttyWindow()
   end
 end
 
-local function scheduleGhosttyWindowSync()
+local function scheduleGhosttyWindowSync(force)
   clearPendingSync()
   state.pendingSync = hs.timer.doAfter(0.15, function()
     state.pendingSync = nil
-    switchInputForGhosttyWindow()
+    switchInputForGhosttyWindow(force)
   end)
 end
 
@@ -178,7 +189,7 @@ state.appWatcher = hs.application.watcher.new(function(_, eventType)
 
   local app = hs.application.frontmostApplication()
   if app and app:bundleID() == "com.mitchellh.ghostty" then
-    scheduleGhosttyWindowSync()
+    scheduleGhosttyWindowSync(true)
   else
     state.pendingSync = hs.timer.doAfter(0.15, function()
       state.pendingSync = nil
@@ -196,14 +207,14 @@ state.ghosttyWinFilter:subscribe(hs.window.filter.windowFocused, function(window
   if not window or not app then return end
   if app:bundleID() ~= "com.mitchellh.ghostty" then return end
 
-  scheduleGhosttyWindowSync()
+  scheduleGhosttyWindowSync(true)
 end)
 
--- Polling is a fallback for Ghostty/tmux title changes and same-app window switches
--- that do not always produce a reliable hs.window.filter event.
+-- Polling only reacts to Ghostty window/title changes; it does not keep forcing
+-- the input source for an unchanged window, so manual switches still stick.
 state.ghosttyPoller = hs.timer.new(0.5, function()
   if frontmostBundleID() == "com.mitchellh.ghostty" then
-    switchInputForGhosttyWindow()
+    switchInputForGhosttyWindow(false)
   end
 end)
 
@@ -214,7 +225,7 @@ state.caffeinateWatcher = hs.caffeinate.watcher.new(function(eventType)
   if eventType == hs.caffeinate.watcher.systemDidWake
     or eventType == hs.caffeinate.watcher.screensDidUnlock then
     syncFrontmostApp()
-    switchInputForGhosttyWindow()
+    switchInputForGhosttyWindow(true)
   end
 end)
 
@@ -225,6 +236,6 @@ state.ghosttyPoller:start()
 
 -- Initial sync
 syncFrontmostApp()
-switchInputForGhosttyWindow()
+switchInputForGhosttyWindow(true)
 
 log.i("Input switcher loaded")

@@ -1,87 +1,60 @@
+# Mihomo 透明网关 — 优化版
+# PVE LXC 202 (192.168.1.18)
+
 allow-lan: true
 bind-address: 0.0.0.0
+mixed-port: 7890
+tproxy-port: 7891
+mode: rule
+log-level: warning                    # 🎯 info→warning
+ipv6: false
+external-controller: 0.0.0.0:9090
+external-ui: /etc/mihomo/ui
+secret: CMOSdianlu                    # 🎯 新增：API 加密码
+
 dns:
-  default-nameserver:
-  - 223.5.5.5
-  - 114.114.114.114
   enable: true
   enhanced-mode: fake-ip
-  fake-ip-filter:
-  - +.continue.dev
-  - '*.lan'
-  - '*.local'
-  - localhost.ptlogin2.qq.com
-  - +.srv.nintendo.net
-  - +.stun.playstation.net
-  - +.stun.sony.net
-  - msftncsi.com
-  - '*.msftncsi.com'
-  - +.jfdddy.net
-  - +.jf88.co
-  fake-ip-range: 198.18.0.1/16
+  listen: 0.0.0.0:5353
+  default-nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+  nameserver:
+    - https://doh.pub/dns-query
+    - tls://223.5.5.5:853
   fallback:
-  - tls://1.12.12.12:853
+    - tls://1.12.12.12:853
+    - tls://223.5.5.5:853            # 🎯 新增：fallback 备选
   fallback-filter:
     geoip: true
     geoip-code: CN
-  listen: 0.0.0.0:5353
-  nameserver:
-  - https://doh.pub/dns-query
-  - tls://223.5.5.5:853
-external-controller: 0.0.0.0:9090
-external-ui: /etc/mihomo/ui
-ipv6: false
-log-level: info
-mixed-port: 7890
-mode: rule
-proxy-groups:
-- filter: 日本|JP|Tokyo
-  interval: 300
-  name: 日本
-  tolerance: 50
-  type: url-test
-  url: http://www.gstatic.com/generate_204
-  use:
-  - Provider
-- interval: 300
-  name: Auto
-  tolerance: 50
-  type: url-test
-  url: http://www.gstatic.com/generate_204
-  use:
-  - Provider
-- interval: 300
-  name: Fallback
-  type: fallback
-  url: http://www.gstatic.com/generate_204
-  use:
-  - Provider
-- interval: 300
-  name: LoadBalance
-  strategy: consistent-hashing
-  type: load-balance
-  url: http://www.gstatic.com/generate_204
-  use:
-  - Provider
-- name: Proxy
-  proxies:
-  - Auto
-  - Fallback
-  - LoadBalance
-  - DIRECT
-  type: select
-  use:
-  - Provider
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - +.continue.dev
+    - '*.lan'
+    - '*.local'
+    - localhost.ptlogin2.qq.com
+    - +.srv.nintendo.net
+    - +.stun.playstation.net
+    - +.stun.sony.net
+    - msftncsi.com
+    - '*.msftncsi.com'
+    - +.jfdddy.net
+    - +.jf88.co
+  proxy-server-nameserver:           # 🎯 新增：节点域名专用 DNS
+    - 223.5.5.5
+    - 114.114.114.114
+
 proxy-providers:
   Provider:
+    type: http
+    url: https://jfdddy.net/link/VTBaHMehkBM7MHTo?clash=1
+    interval: 1800                    # 🎯 3600→1800
+    path: /etc/mihomo/proxy-providers/provider.yaml
     health-check:
       enable: true
       interval: 600
       url: http://www.gstatic.com/generate_204
-    interval: 3600
-    path: /etc/mihomo/proxy-providers/provider.yaml
-    type: http
-    url: https://jfdddy.net/link/VTBaHMehkBM7MHTo?clash=1
 
 rule-providers:
   reject:
@@ -127,6 +100,45 @@ rule-providers:
     interval: 86400
     path: /etc/mihomo/rules/cncidr.yaml
 
+proxy-groups:
+  - filter: 日本|JP|Tokyo
+    interval: 300
+    name: 日本
+    tolerance: 30                     # 🎯 50→30
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    use:
+      - Provider
+  - interval: 300
+    name: Auto
+    tolerance: 30                     # 🎯 50→30
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    use:
+      - Provider
+  - interval: 300
+    name: Fallback
+    type: fallback
+    url: http://www.gstatic.com/generate_204
+    use:
+      - Provider
+  - interval: 300
+    name: LoadBalance
+    strategy: consistent-hashing
+    type: load-balance
+    url: http://www.gstatic.com/generate_204
+    use:
+      - Provider
+  - name: Proxy
+    proxies:
+      - Auto
+      - Fallback
+      - LoadBalance
+      - DIRECT
+    type: select
+    use:
+      - Provider
+
 rules:
   # 自定义（高优）
   - DOMAIN-SUFFIX,deepseek.com,DIRECT
@@ -159,18 +171,19 @@ rules:
   - GEOSITE,geolocation-!cn,Proxy
   - GEOIP,CN,DIRECT
   - MATCH,Proxy
-secret: ''
+
 sniffer:
   enable: true
   force-domain: []
   sniffing:
-  - tls
-  - http
-tproxy-port: 7891
+    - tls
+    - http
+    - quic                        # 🎯 新增：嗅探 QUIC
+
 tun:
   auto-redirect: true
   auto-route: true
   dns-hijack:
-  - any:53
+    - any:53
   enable: false
   stack: gvisor

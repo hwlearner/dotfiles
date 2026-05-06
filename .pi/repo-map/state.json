@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 2,
+  "indexedAt": "2026-05-04T16:24:31.665Z",
+  "files": {
+    "nvim/.neoconf.json": {
+      "path": "nvim/.neoconf.json",
+      "language": "json",
+      "parserStatus": "indexed",
+      "size": 183,
+      "mtimeMs": 1768455160000,
+      "fingerprint": {
+        "kind": "hash",
+        "value": "176b64e5"
+      },
+      "indexedAt": "2026-05-04T16:19:47.781Z",
+      "firstIndexedAt": "2026-05-04T16:19:47.781Z",
+      "symbols": [],
+      "imports": [],
+      "outgoingPaths": [],
+      "incomingPaths": []
+    },
+    "nvim/lazy-lock.json": {
+      "path": "nvim/lazy-lock.json",
+      "language": "json",
+      "parserStatus": "indexed",
+      "size": 4504,
+      "mtimeMs": 1777194594178.939,
+      "fingerprint": {
+        "kind": "hash",
+        "value": "f8ee51e8"
+      },
+      "indexedAt": "2026-05-04T16:19:47.782Z",
+      "firstIndexedAt": "2026-05-04T16:19:47.782Z",
+      "symbols": [],
+      "imports": [],
+      "outgoingPaths": [],
+      "incomingPaths": []
+    },
+    "nvim/lazyvim.json": {
+      "path": "nvim/lazyvim.json",
+      "language": "json",
+      "parserStatus": "indexed",
+      "size": 694,
+      "mtimeMs": 1777709544299.0022,
+      "fingerprint": {
+        "kind": "hash",
+        "value": "6ad69c9a"
+      },
+      "indexedAt": "2026-05-04T16:19:47.783Z",
+      "firstIndexedAt": "2026-05-04T16:19:47.783Z",
+      "symbols": [],
+      "imports": [],
+      "outgoingPaths": [],
+      "incomingPaths": []
+    },
+    "vscode/User/keybindings.json": {
+      "path": "vscode/User/keybindings.json",
+      "language": "json",
+      "parserStatus": "indexed",
+      "size": 6747,
+      "mtimeMs": 1777704782313.2703,
+      "fingerprint": {
+        "kind": "hash",
+        "value": "a5da7241"
+      },
+      "indexedAt": "2026-05-04T16:19:47.783Z",
+      "firstIndexedAt": "2026-05-04T16:19:47.783Z",
+      "symbols": [],
+      "imports": [],
+      "outgoingPaths": [],
+      "incomingPaths": []
+    },
+    "vscode/User/locale.json": {
+      "path": "vscode/User/locale.json",
+      "language": "json",
+      "parserStatus": "indexed",
+      "size": 21,
+      "mtimeMs": 1777701268844.0027,
+      "fingerprint": {
+        "kind": "hash",
+        "value": "57593742"
+      },
+      "indexedAt": "2026-05-04T16:19:47.784Z",
+      "firstIndexedAt": "2026-05-04T16:19:47.784Z",
+      "symbols": [],
+      "imports": [],
+      "outgoingPaths": [],
+      "incomingPaths": []
+    },
+    "vscode/User/settings.json": {
+      "path": "vscode/User/settings.json",
+      "language": "json",
+      "parserStatus": "indexed",
+      "size": 5340,
+      "mtimeMs": 1777709158695.8533,
+      "fingerprint": {
+        "kind": "hash",
+        "value": "db0ccbf3"
+      },
+      "indexedAt": "2026-05-04T16:19:47.784Z",
+      "firstIndexedAt": "2026-05-04T16:19:47.784Z",
+      "symbols": [],
+      "imports": [],
+      "outgoingPaths": [],
+      "incomingPaths": []
+    },
+    "zed/keymap.json": {
+      "path": "zed/keymap.json",
+      "language": "json",
+      "parserStatus": "indexed",
+      "size": 2268,
+      "mtimeMs": 1777350072625.3184,
+      "fingerprint": {
+        "kind": "hash",
+        "value": "20f883c8"
+      },
+      "indexedAt": "2026-05-04T16:19:47.785Z",
+      "firstIndexedAt": "2026-05-04T16:19:47.785Z",
+      "symbols": [],
+      "imports": [],
+      "outgoingPaths": [],
+      "incomingPaths": []
+    },
+    "zed/settings.json": {
+      "path": "zed/settings.json",
+      "language": "json",
+      "parserStatus": "indexed",
+      "size": 1256,
+      "mtimeMs": 1777619613124.268,
+      "fingerprint": {
+        "kind": "hash",
+        "value": "2f0f79e2"
+      },
+      "indexedAt": "2026-05-04T16:19:47.785Z",
+      "firstIndexedAt": "2026-05-04T16:19:47.785Z",
+      "symbols": [],
+      "imports": [],
+      "outgoingPaths": [],
+      "incomingPaths": []
+    },
+    "zed/tasks.json": {
+      "path": "zed/tasks.json",
+      "language": "json",
+      "parserStatus": "indexed",
+      "size": 806,
+      "mtimeMs": 1777193968251.2515,
+      "fingerprint": {
+        "kind": "hash",
+        "value": "bd19c5c9"
+      },
+      "indexedAt": "2026-05-04T16:19:47.786Z",
+      "firstIndexedAt": "2026-05-04T16:19:47.786Z",
+      "symbols": [],
+      "imports": [],
+      "outgoingPaths": [],
+      "incomingPaths": []
+    }
+  }
+}

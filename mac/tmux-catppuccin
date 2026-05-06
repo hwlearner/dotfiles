@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 # ==============================================================================
 # tmux-catppuccin — 根据 macOS 深浅色模式切换 tmux 状态栏颜色
 # 用法: tmux-catppuccin apply          立即应用到当前 tmux

@@ -1,14 +1,15 @@
-# macOS Mihomo — 直连订阅，不走家里 Clash
-# 基于 PVE 家服配置修改
+# macOS Mihomo — 优化版
+# 本机直连订阅，不走家里 Clash
 
 mixed-port: 7890
 allow-lan: false
 bind-address: 127.0.0.1
 mode: rule
-log-level: info
+log-level: warning                # 🎯 info→warning，减少日志 I/O
 ipv6: false
 external-controller: 127.0.0.1:9090
 external-ui: /Users/han/.config/mihomo/ui
+secret: CMOSdianlu                # 🎯 新增：API 加密码
 
 dns:
   enable: true
@@ -21,6 +22,7 @@ dns:
     - tls://223.5.5.5:853
   fallback:
     - tls://1.12.12.12:853
+    - tls://223.5.5.5:853          # 🎯 新增：fallback 备选
   fallback-filter:
     geoip: true
     geoip-code: CN
@@ -46,7 +48,7 @@ proxy-providers:
   Provider:
     type: http
     url: https://jfdddy.net/link/VTBaHMehkBM7MHTo?clash=1
-    interval: 3600
+    interval: 1800                  # 🎯 3600→1800，订阅更新更快
     path: /Users/han/.config/mihomo/provider.yaml
     health-check:
       enable: true
@@ -64,42 +66,36 @@ rule-providers:
     url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt
     interval: 86400
     path: /Users/han/.config/mihomo/rules/reject.yaml
-
   direct:
     type: http
     behavior: classical
     url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt
     interval: 86400
     path: /Users/han/.config/mihomo/rules/direct.yaml
-
   private:
     type: http
     behavior: classical
     url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt
     interval: 86400
     path: /Users/han/.config/mihomo/rules/private.yaml
-
   proxy:
     type: http
     behavior: classical
     url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt
     interval: 86400
     path: /Users/han/.config/mihomo/rules/proxy.yaml
-
   apple:
     type: http
     behavior: classical
     url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt
     interval: 86400
     path: /Users/han/.config/mihomo/rules/apple.yaml
-
   icloud:
     type: http
     behavior: classical
     url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt
     interval: 86400
     path: /Users/han/.config/mihomo/rules/icloud.yaml
-
   cncidr:
     type: http
     behavior: ipcidr
@@ -112,7 +108,7 @@ proxy-groups:
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
-    tolerance: 50
+    tolerance: 30                   # 🎯 50→30，减少次优节点停留
     filter: 日本|JP|Tokyo
     use:
       - Provider
@@ -121,7 +117,7 @@ proxy-groups:
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
-    tolerance: 50
+    tolerance: 30                   # 🎯 50→30
     use:
       - Provider
 
@@ -174,7 +170,7 @@ rules:
   - RULE-SET,proxy,Proxy
   - RULE-SET,cncidr,DIRECT
 
-  # --- Catppuccin GEOSITE 规则（兜底）---
+  # --- GEOSITE 规则（兜底）---
   - GEOSITE,category-ads-all,REJECT
   - GEOSITE,private,DIRECT
   - GEOSITE,microsoft@cn,DIRECT
@@ -194,3 +190,4 @@ sniffer:
   sniffing:
     - tls
     - http
+    - quic                    # 🎯 新增：嗅探 QUIC 流量

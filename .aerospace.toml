@@ -164,16 +164,6 @@ on-mode-changed = []
     # end tell'
     # '''
 
-    alt-return = '''exec-and-forget osascript -e '
-tell application "Ghostty"
-    if it is running then
-        activate
-    else
-        do shell script "open -a Ghostty"
-    end if
-end tell'
-'''
-
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
     alt-slash = 'layout tiles horizontal vertical'
     alt-comma = 'layout accordion horizontal vertical'
