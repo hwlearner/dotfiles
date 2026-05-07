@@ -51,5 +51,7 @@ if command -v starship >/dev/null 2>&1; then
   eval "$(starship init zsh)"
 fi
 
-# opencode
-export PATH=/home/han/.opencode/bin:$PATH
+# opencode (Linux only — macOS uses Homebrew path from .zprofile)
+if [[ "$(uname -s)" != "Darwin" && -d "$HOME/.opencode/bin" ]]; then
+  export PATH="$HOME/.opencode/bin:$PATH"
+fi

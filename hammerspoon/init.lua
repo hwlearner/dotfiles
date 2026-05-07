@@ -10,7 +10,6 @@ local tmuxBin = "/opt/homebrew/bin/tmux"
 -- ============================================================================
 local appInputMap = {
   ["com.openai.codex"] = { sourceID = "com.apple.inputmethod.SCIM.ITABC", label = "Pinyin - ABC" },
-  ["ai.opencode.desktop"] = { sourceID = "com.apple.inputmethod.SCIM.ITABC", label = "Pinyin - ABC" },
   ["com.microsoft.VSCode"] = { layout = "ABC", label = "ABC" },
   ["dev.zed.Zed"] = { layout = "ABC", label = "ABC" },
   -- Ghostty is handled separately (see below)
