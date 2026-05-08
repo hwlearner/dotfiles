@@ -100,10 +100,10 @@ brew bundle --file=Brewfile
 
 - **Windows 物理盘直通双启动**：Windows 直接安装在一块独立的物理硬盘上，既可**裸机双系统启动**获得完整性能，又可作为**虚拟机启动**由 Proxmox 管理。两种方式共用同一份 Windows 系统，状态完全同步。
 - **GPU 直通**：在虚拟机启动模式下，将强力 GPU 直通给 Windows，原生游戏性能，完美兼容米哈游等反作弊游戏，借助 Sunshine/Moonlight 实现全屋串流。
-- **AI 智能体 (OpenCode / Hermes)**：7×24 小时运行，提供 Web UI 和远程 API，用于 AI 编码、任务自动化，通过 MCP 协议运维宿主机。
+- **AI 智能体 (OpenClaw / OpenCode)**：7×24 小时运行，提供 Web UI 和远程 API，用于 AI 编码、任务自动化，通过 MCP 协议运维宿主机。
 - **NAS 文件存储**：直通大容量机械硬盘，运行飞牛 OS / TrueNAS 提供 SMB 文件共享、DLNA 媒体服务、下载中心。
 - **Home Assistant**：独立虚拟机作为智能家居中枢，统一管理全套华为智能家居设备，实现跨品牌联动。
-- **Clash 透明网关**：旁路由模式为全屋设备提供透明代理和智能分流。
+- **Mihomo 透明网关**：旁路由模式为开发容器和需要代理的设备提供透明代理和智能分流。
 - **Headless Proxmox 宿主机**：Linux 宿主机完全无图形界面，仅通过 SSH 或 Proxmox Web 面板管理。
 
 整套系统灵活强大：想打游戏时物理启动或 VM 模式串流，平时后台运行 AI、NAS、HA 等服务。
@@ -130,7 +130,7 @@ brew bundle --file=Brewfile
 
 ---
 
-## 4. AI 智能体 (Hermes / OpenCode) 与宿主机运维
+## 4. OpenClaw / OpenCode 与宿主机运维
 
 ### 4.1 部署方式
 
@@ -142,7 +142,7 @@ brew bundle --file=Brewfile
 
 ### 4.2 MCP 接口总览
 
-Hermes 通过 Proxmox API Token + MCP Server 管理整个集群，当前注册了 **20 个工具**：
+OpenClaw 通过 Proxmox API Token + MCP Server 管理整个集群，当前注册了 **约 306 个工具**：
 
 | 类别 | MCP 工具 | 说明 |
 |------|----------|------|
@@ -156,7 +156,7 @@ Hermes 通过 Proxmox API Token + MCP Server 管理整个集群，当前注册�
 | **Clash** | `clash_proxies` | 查看所有节点延迟和当前策略 |
 | | `clash_set_proxy` | 切换 Clash 策略组到指定节点 |
 | **Windows** | `win_ssh` | 通过 SSH 在 Windows 上执行命令（han 用户） |
-| **网络** | `ping_test` | 从 Hermes LXC ping 任意主机 |
+| **网络** | `ping_test` | 从 OpenClaw LXC ping 任意主机 |
 | **NAS** | `nas_status` | 查看 NAS 磁盘用量和服务状态 |
 | | `nas_disk` | 查看 NAS 存储设备列表 |
 | **OpenCode** | `opencode_run` | 在开发环境 LXC 中执行命令 |
@@ -164,13 +164,13 @@ Hermes 通过 Proxmox API Token + MCP Server 管理整个集群，当前注册�
 
 ### 4.3 Host-MCP：pve01 宿主机运维工具
 
-通过 MCP 协议让 Hermes 安全地管理 PVE 宿主机，无需 SSH，不走通用 shell。
+通过 MCP 协议让 OpenClaw 安全地管理 PVE 宿主机，无需 SSH，不走通用 shell。
 
 **架构**：
 
 ```
-Hermes (LXC 200)
-    │ HTTP POST → 10.0.0.12:9120/
+OpenClaw (LXC 200)
+    │ HTTP POST → 192.168.1.12:9120/
     ▼
 host-mcp (systemd 服务, 用户 host-mcp, 非 root)
     ├── system_info      → CPU/内存/uptime 总览
@@ -186,7 +186,7 @@ host-mcp (systemd 服务, 用户 host-mcp, 非 root)
 **安全边界**：
 - 所有命令硬编码，不接受任意 command 字符串
 - 进程以非 root 用户 `host-mcp` 运行，通过 `sudoers` 精确授权
-- iptables 仅允许 LXC 容器 IP (10.0.0.13) 访问端口 9120
+- iptables 仅允许 LXC 容器 IP (192.168.1.11) 访问端口 9120
 - 每个工具调用记录在 systemd journal 中
 
 **部署位置**：`/opt/host-mcp/host-mcp.py`，通过 `systemctl` 管理。
@@ -244,8 +244,8 @@ Debian 12 LXC，**Cockpit** Web 管理 + **Samba** 文件共享。
 
 | 功能 | 说明 |
 |------|------|
-| **Web 面板** | `https://192.168.1.59:9090`（Cockpit） |
-| **SMB 共享** | `smb://192.168.1.59/nas`（匿名读写） |
+| **Web 面板** | `https://192.168.1.50:9090`（Cockpit） |
+| **SMB 共享** | `smb://192.168.1.50/nas`（匿名读写） |
 | **自动解压** | 拖入 `.zip`/`.rar`/`.tar.gz` 自动解压到同名子目录，支持备用密码 |
 | **后续加硬盘** | 直通物理盘后手动挂载，通过 Cockpit 管理 |
 
@@ -282,26 +282,27 @@ NAS (LXC 300)
 
 ---
 
-## 7. 网络旁路由 (Clash)
+## 7. 网络旁路由 (Mihomo)
 
 ### 7.1 架构
 
-在 PVE 上部署 **Mihomo** 作为透明网关 VM，为全屋设备提供智能分流：
+在 PVE 上部署 **Mihomo** 作为透明网关 LXC，为开发容器和需要代理的设备提供智能分流：
 
 ```
 LAN 设备
-    │ 网关 → 10.0.0.18 (Clash LXC)
+    │ 网关 → 192.168.1.20 (router LXC 101)
     ▼
-Clash LXC (Mihomo, 10.0.0.18)
+router LXC 101 (Mihomo, 192.168.1.20)
     ├── 国内流量 → 直连
-    └── 海外流量 → 代理节点
+    └── 海外流量 → Proxy -> Auto 低延迟节点
 ```
 
 ### 7.2 部署方式
 
-- **LXC 容器**运行 Mihomo，静态 IP `10.0.0.18`，Debian 12 系统
-- HTTP/SOCKS5 混合代理端口 `:7890`，DNS `:5353`
-- LAN 设备可将网关指向 Clash LXC，或手动设置代理
+- **LXC 101 `router`** 运行 Mihomo，静态 IP `192.168.1.20`
+- HTTP/SOCKS5 混合代理端口 `:7890`，TPROXY `:7891`，DNS `:5353`
+- `mihomo-gateway.service` 通过 nftables TPROXY 接管经 101 出口的 TCP/UDP
+- 容器内不放全局代理环境变量；PVE 通过默认路由管理拓扑
 
 ---
 
@@ -318,17 +319,16 @@ Clash LXC (Mihomo, 10.0.0.18)
   Tailscale 网络 (WireGuard 加密)
         │
         ▼
-PVE 宿主机 (子网路由器, 10.0.0.0/24)
+PVE 宿主机 (子网路由器, 192.168.1.0/24)
         │
         ▼
-  LAN 10.0.0.0/24
-        ├── 10.0.0.12  PVE Web 面板 (:8006)
-        ├── 10.0.0.13  ai-agent (Hermes :9119)
-        ├── 10.0.0.14  项目 A (OpenCode :4096)
-        ├── 10.0.0.15  项目 B (OpenCode :4096)
-        ├── 10.0.0.16  NAS (WebUI :5000/SMB :445)
-        ├── 10.0.0.17  Home Assistant (:8123)
-        └── 10.0.0.18  Clash / Mihomo (:7890/:5353)
+  LAN 192.168.1.0/24
+        ├── 192.168.1.12  PVE Web 面板 (:8006)
+        ├── 192.168.1.11  OpenClaw (:18789)
+        ├── 192.168.1.20  Mihomo router (:7890/:7891/:5353)
+        ├── 192.168.1.50  NAS (:9090/:445/:9121)
+        ├── 192.168.1.100 Dev Template (:4096)
+        └── 192.168.1.101 ESL Simulator (:4096)
 ```
 
 ### 8.2 Tailscale Serve
@@ -342,16 +342,16 @@ Tailscale Serve 自动签发 Let's Encrypt 证书，直接转发：
 tailscale serve (:443, 自动 TLS 证书)
     │
     ▼
-Hermes Dashboard (:9119)
+OpenClaw Dashboard (:18789/claw/)
 ```
 
 **访问地址**：
 
 | 服务 | 地址 |
 |------|------|
-| Hermes Dashboard (HTTPS) | `https://<your-tailscale-hostname>/` |
-| PVE Web 面板 | `https://10.0.0.12:8006` |
-| Home Assistant | `https://10.0.0.17:8123` |
+| OpenClaw Dashboard (HTTPS) | `https://serverhan.tail3fd170.ts.net/claw/` |
+| PVE Web 面板 | `https://192.168.1.12:8006` |
+| Home Assistant | 未部署 |
 
 ### 8.3 系统加固
 
@@ -375,7 +375,7 @@ Hermes Dashboard (:9119)
 | 备份对象 | 策略 | 频率 |
 |----------|------|------|
 | LXC 模板 | PBS 增量备份 | 每日 |
-| Hermes Agent | PBS 增量备份 | 每日 |
+| OpenClaw Agent | PBS 增量备份 | 每日 |
 | NAS 配置 | 导出配置文件 | 每次变更 |
 | Home Assistant | PBS 快照 + 配置导出 | 每日 |
 
@@ -392,7 +392,7 @@ Hermes Dashboard (:9119)
                                ▼
 +===========================================================+
 |              Proxmox VE 宿主机 (pve01)                 |
-|  PVE 9.1 · 静态 IP 10.0.0.12                           |
+|  PVE 9.1 · 静态 IP 192.168.1.12                        |
 |  Tailscale 子网路由 · HTTPS Serve (:443)                  |
 |  host-mcp (:9120, iptables 仅允许 LXC 访问)               |
 |===========================================================|
@@ -402,34 +402,32 @@ Hermes Dashboard (:9119)
 |  +--+----------------------------------+                 |
 |     |                                                    |
 |  +--+---------------------------- LXC 200               |
-|  |  ai-agent (10.0.0.13)                              |
-|  |  · Hermes Agent v0.12.0                               |
-|  |  · Hermes Dashboard (:9119)                           |
-|  |  · Hermes WeChat Gateway                              |
-|  |  · Proxmox MCP (9 tools，管理 VM)                     |
-|  |  · host-mcp (8 tools，管理宿主机)                     |
+|  |  ai-agent (192.168.1.11)                            |
+|  |  · OpenClaw Dashboard (:18789/claw/)                  |
+|  |  · Telegram / QQBot / Weixin 插件                     |
+|  |  · proxmox-mcp 包版 + nas-mcp                         |
 |  +--------------------------------+                      |
-|  +--+---------------------------- LXC 201 (未来)         |
-|  |  项目 A (10.0.0.14)                                |
+|  +--+---------------------------- LXC 280 (模板)         |
+|  |  Dev Template (192.168.1.100)                       |
 |  |  · OpenCode Web (:4096)                               |
 |  +--------------------------------+                      |
 |  +--+---------------------------- LXC 300 (已部署)          |
-|  |  NAS (192.168.1.59)                                    |
+|  |  NAS (192.168.1.50)                                    |
 |  |  · Cockpit Web (:9090) / SMB 共享                       |
 |  |  · 1TB 存储（可加物理盘直通）                            |
 |  +--------------------------------+                      |
 |  +--+---------------------------- VM (规划中)            |
-|  |  Home Assistant (10.0.0.17)                        |
+|  |  Home Assistant (未部署)                            |
 |  |  · 华为智能家居桥接                                   |
 |  |  · 跨品牌自动化                                       |
 |  +--------------------------------+                      |
-|  +--+---------------------------- LXC 202 (已部署)         |
-|  |  Clash / Mihomo (10.0.0.18)                          |
-|  |  · HTTP/SOCKS5 代理 · DNS (:5353)                       |
-|  |  · <ProxyProvider> 代理订阅                                       |
+|  +--+---------------------------- LXC 101 (已部署)         |
+|  |  Mihomo router (192.168.1.20)                         |
+|  |  · HTTP/SOCKS5 (:7890) · TPROXY (:7891) · DNS (:5353)  |
+|  |  · Proxy -> Auto 低延迟节点，未配置高优域名覆盖        |
 |  +--------------------------------+                      |
 |                                                           |
-|  局域网: 10.0.0.x 直接可达                             |
+|  局域网: 192.168.1.x 直接可达                          |
 |  外网: Tailscale 子网路由 + HTTPS Serve                  |
 +===========================================================+
          |
@@ -445,12 +443,12 @@ Hermes Dashboard (:9119)
 | 组件 | 详情 |
 |------|------|
 | PVE 9.1 | NVMe 2TB，ext4 + LVM-thin，UEFI GRUB，内核 6.17.x |
-| 网络 | 静态 IP 10.0.0.12，桥接 vmbr0 |
-| Tailscale | 子网路由 10.0.0.0/24，HTTPS Serve |
-| Hermes Agent | LXC 200 (10.0.0.13)，Dashboard、WeChat Gateway、Proxmox MCP、host-mcp |
+| 网络 | 静态 IP 192.168.1.12，桥接 vmbr0 |
+| Tailscale | 子网路由 192.168.1.0/24，HTTPS Serve |
+| OpenClaw Agent | LXC 200 (192.168.1.11)，Dashboard、渠道插件、Proxmox MCP、nas-mcp |
 | host-mcp | PVE 宿主机运维 MCP，systemd 服务，iptables IP 白名单，sudoers 命令白名单 |
 | Windows VM | 物理盘直通 + VirtIO SCSI + VirtIO 网卡 + RTX 4080 直通 + Sunshine 串流 |
-| NAS (CasaOS) | LXC 300 (192.168.1.59)，Cockpit Web 管理 + SMB 文件共享，1TB 存储 |
+| NAS | LXC 300 (192.168.1.50)，Cockpit Web 管理 + SMB 文件共享，1TB 存储 |
 | LXC 项目模板 | 预装 OpenCode、Neovim LazyVim、多语言运行时的开发环境模板 |
 | SSH 加固 | 已禁用密码登录，仅密钥认证 |
 
@@ -458,7 +456,7 @@ Hermes Dashboard (:9119)
 
 - [x] 安装 OpenCode（LXC 容器内并行部署）
 - [x] 部署 NAS（Cockpit + Samba，LXC 300）
-- [x] 部署 Clash / Mihomo 透明网关（含日本节点 + ChatGPT 规则）
+- [x] 部署 Mihomo 透明网关（LXC 101，Proxy -> Auto，无高优域名覆盖）
 - [ ] 部署 Home Assistant VM
 - [ ] 配置 Proxmox Backup Server (PBS) 备份策略
 - [ ] 配置 3-2-1 异地备份
@@ -469,10 +467,10 @@ Hermes Dashboard (:9119)
 
 - **Windows 物理盘直通**：双系统裸机启动 + 虚拟机模式，系统状态完全一致
 - **GPU 直通**：原生游戏性能 + Sunshine 全屋串流
-- **Hermes & OpenCode**：7×24 在线 AI 编码与自动化
+- **OpenClaw & OpenCode**：7×24 在线 AI 编码与自动化
 - **NAS**：Cockpit + Samba LXC，SMB 共享 + 自动解压
 - **Home Assistant**：华为智能家居中枢，跨品牌联动
-- **Clash 网关**：全屋透明代理，智能分流
+- **Mihomo 网关**：透明代理，智能分流
 - **MCP 宿主机运维**：AI 通过 Proxmox API 管理虚拟化环境
 - **Tailscale**：免配置外网访问，HTTPS 证书自动签发
 - **3-2-1 备份**：PBS 加密增量备份 + 异地容灾
