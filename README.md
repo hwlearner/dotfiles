@@ -290,18 +290,18 @@ NAS (LXC 300)
 
 ```
 LAN 设备
-    │ 网关 → 192.168.1.20 (router LXC 101)
+    │ 网关 → 192.168.1.20 (router LXC 100)
     ▼
-router LXC 101 (Mihomo, 192.168.1.20)
+router LXC 100 (Mihomo, 192.168.1.20)
     ├── 国内流量 → 直连
     └── 海外流量 → Proxy -> Auto 低延迟节点
 ```
 
 ### 7.2 部署方式
 
-- **LXC 101 `router`** 运行 Mihomo，静态 IP `192.168.1.20`
+- **LXC 100 `router`** 运行 Mihomo，静态 IP `192.168.1.20`
 - HTTP/SOCKS5 混合代理端口 `:7890`，TPROXY `:7891`，DNS `:5353`
-- `mihomo-gateway.service` 通过 nftables TPROXY 接管经 101 出口的 TCP/UDP
+- `mihomo-gateway.service` 通过 nftables TPROXY 接管经 100 出口的 TCP/UDP
 - 容器内不放全局代理环境变量；PVE 通过默认路由管理拓扑
 
 ---
@@ -421,7 +421,7 @@ OpenClaw Dashboard (:18789/claw/)
 |  |  · 华为智能家居桥接                                   |
 |  |  · 跨品牌自动化                                       |
 |  +--------------------------------+                      |
-|  +--+---------------------------- LXC 101 (已部署)         |
+|  +--+---------------------------- LXC 100 (已部署)         |
 |  |  Mihomo router (192.168.1.20)                         |
 |  |  · HTTP/SOCKS5 (:7890) · TPROXY (:7891) · DNS (:5353)  |
 |  |  · Proxy -> Auto 低延迟节点，未配置高优域名覆盖        |
@@ -456,7 +456,7 @@ OpenClaw Dashboard (:18789/claw/)
 
 - [x] 安装 OpenCode（LXC 容器内并行部署）
 - [x] 部署 NAS（Cockpit + Samba，LXC 300）
-- [x] 部署 Mihomo 透明网关（LXC 101，Proxy -> Auto，无高优域名覆盖）
+- [x] 部署 Mihomo 透明网关（LXC 100，Proxy -> Auto，无高优域名覆盖）
 - [ ] 部署 Home Assistant VM
 - [ ] 配置 Proxmox Backup Server (PBS) 备份策略
 - [ ] 配置 3-2-1 异地备份
