@@ -6,8 +6,9 @@ Wants=network-online.target
 [Service]
 Type=simple
 User=han
-WorkingDirectory=/opt/nas-mcp
-ExecStart=/usr/bin/python3 /opt/nas-mcp/nas-mcp-server.py
+Environment=NAS_MCP_HOST=192.168.1.50
+Environment=NAS_MCP_PORT=9121
+ExecStart=/usr/bin/python3 /usr/local/bin/nas-mcp-server.py
 Restart=always
 RestartSec=5
 StandardOutput=journal

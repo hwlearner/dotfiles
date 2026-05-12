@@ -32,9 +32,6 @@ timonwong.shellcheck
 # TOML
 tamasfe.even-better-toml
 
-# Docker
-ms-azuretools.vscode-docker
-
 # Remote
 ms-vscode-remote.remote-ssh
 

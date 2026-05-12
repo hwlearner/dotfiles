@@ -1,5 +1,5 @@
 # Mihomo 透明网关 — 优化版
-# PVE LXC 100 (192.168.1.20)
+# PVE LXC 101 (192.168.1.20)
 
 allow-lan: true
 bind-address: 0.0.0.0
@@ -57,7 +57,7 @@ proxy-providers:
     path: /etc/mihomo/proxy-providers/provider.yaml
     health-check:
       enable: true
-      interval: 600
+      interval: 120
       url: http://www.gstatic.com/generate_204
 
 rule-providers:

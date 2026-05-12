@@ -10,7 +10,6 @@
 - `nvim/`：来自 `~/.config/nvim` 的 Neovim 配置。
 - `nvim-vscode/`：来自 `~/.config/nvim-vscode` 的 VS Code Neovim 桥接配置。
 - `ghostty/`：来自 `~/.config/ghostty` 的 Ghostty 配置。
-- `hammerspoon/`：来自 `~/.hammerspoon` 的 Hammerspoon 自动化配置。
 - `git/ignore`：来自 `~/.config/git/ignore` 的全局 Git 忽略规则。
 - `vscode/`：VS Code 用户设置、快捷键、语言配置和扩展列表。
 - `zed/`：Zed 用户设置、快捷键和全局任务配置。

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""NAS MCP Server - lightweight MCP over HTTP"""
-import json, subprocess, logging
+"""NAS MCP Server - lightweight MCP over HTTP."""
+import json, logging, os, subprocess
 from starlette.applications import Starlette
 from starlette.routing import Route
 from starlette.requests import Request
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, PlainTextResponse
 import uvicorn
 
 logger = logging.getLogger("nas-mcp")
@@ -35,8 +35,14 @@ def handle_tool(name):
 def make_err(id, msg):
     return JSONResponse({"jsonrpc":"2.0","id":id,"error":{"code":-32601,"message":msg}})
 
+async def health(_request: Request):
+    return PlainTextResponse("ok\n")
+
 async def mcp_endpoint(request: Request):
-    body = await request.json()
+    try:
+        body = await request.json()
+    except Exception:
+        return make_err(1, "Invalid JSON-RPC request body")
     method = body.get("method","")
     params = body.get("params",{})
     rid = body.get("id", 1)
@@ -61,9 +67,12 @@ async def mcp_endpoint(request: Request):
     return make_err(rid, f"Unknown method: {method}")
 
 app = Starlette(routes=[
+    Route("/health", endpoint=health, methods=["GET"]),
     Route("/", endpoint=mcp_endpoint, methods=["POST"]),
 ])
 
 if __name__ == "__main__":
-    logger.info("NAS MCP starting on 0.0.0.0:9121")
-    uvicorn.run(app, host="0.0.0.0", port=9121, log_level="info")
+    host = os.environ.get("NAS_MCP_HOST", "192.168.1.50")
+    port = int(os.environ.get("NAS_MCP_PORT", "9121"))
+    logger.info("NAS MCP starting on %s:%s", host, port)
+    uvicorn.run(app, host=host, port=port, log_level="info")

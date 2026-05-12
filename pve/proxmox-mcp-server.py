@@ -39,7 +39,8 @@ TOOLS = [
 @server.list_tools()
 async def list_tools(): return TOOLS
 
-SSH_NAS = ["ssh","-o","StrictHostKeyChecking=no","-o","BatchMode=yes","-o","ConnectTimeout=10","han@192.168.1.59"]
+SSH_BASE = ["ssh","-i","/home/claw/.ssh/id_ed25519","-o","IdentitiesOnly=yes","-o","StrictHostKeyChecking=no","-o","BatchMode=yes","-o","ConnectTimeout=15","-o","ConnectionAttempts=3"]
+SSH_NAS = SSH_BASE + ["han@192.168.1.50"]
 
 @server.call_tool()
 async def call_tool(name, arguments):
@@ -74,7 +75,7 @@ async def call_tool(name, arguments):
             r=subprocess.run(["ping","-c","4",arguments["host"]],capture_output=True,text=True,timeout=30)
             return [types.TextContent(type="text",text=f"exit={r.returncode}\n{r.stdout}")]
         if name=="win_ssh":
-            r=subprocess.run(["ssh","-o","StrictHostKeyChecking=no","-o","BatchMode=yes","-o","ConnectTimeout=10","han@192.168.1.15",arguments["command"]],capture_output=True,text=True,timeout=30)
+            r=subprocess.run(SSH_BASE+["han@192.168.1.15",arguments["command"]],capture_output=True,text=True,timeout=30)
             return [types.TextContent(type="text",text=json.dumps({"exitcode":r.returncode,"stdout":r.stdout,"stderr":r.stderr},indent=2,ensure_ascii=False))]
         # NAS file tools
         if name=="nas_ls":
@@ -90,7 +91,7 @@ async def call_tool(name, arguments):
             r=subprocess.run(SSH_NAS+["rm -rfv \""+arguments["path"]+"\" 2>&1"],capture_output=True,text=True,timeout=15)
             return [types.TextContent(type="text",text=json.dumps({"stdout":r.stdout,"stderr":r.stderr},indent=2,ensure_ascii=False))]
         if name=="opencode_run":
-            r=subprocess.run(["ssh","-o","StrictHostKeyChecking=no","-o","ConnectTimeout=10","han@192.168.1.60","cd /home/han && "+arguments["command"]],capture_output=True,text=True,timeout=120)
+            r=subprocess.run(SSH_BASE+["han@192.168.1.101","cd /home/han/ESL_SIMULATOR && "+arguments["command"]],capture_output=True,text=True,timeout=120)
             return [types.TextContent(type="text",text=json.dumps({"exitcode":r.returncode,"stdout":r.stdout,"stderr":r.stderr},indent=2,ensure_ascii=False))]
         if name=="list_backups":
             try:

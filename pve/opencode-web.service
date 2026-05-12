@@ -1,0 +1,23 @@
+[Unit]
+Description=OpenCode Web
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=han
+Group=han
+Environment=HOME=/home/han
+Environment=OPENCODE_HOST=0.0.0.0
+Environment=OPENCODE_PORT=4096
+Environment=OPENCODE_WORKDIR=/home/han
+EnvironmentFile=-/etc/default/opencode-web
+WorkingDirectory=/home/han
+ExecStart=/bin/bash -lc 'cd "$OPENCODE_WORKDIR" && exec /usr/local/bin/opencode serve --hostname "$OPENCODE_HOST" --port "$OPENCODE_PORT"'
+Restart=always
+RestartSec=5
+StandardOutput=append:/var/log/opencode-web.log
+StandardError=append:/var/log/opencode-web.log
+
+[Install]
+WantedBy=multi-user.target
