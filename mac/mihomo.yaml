@@ -191,3 +191,11 @@ sniffer:
     - tls
     - http
     - quic                    # 🎯 新增：嗅探 QUIC 流量
+
+tun:
+  enable: true
+  stack: gvisor
+  auto-route: true
+  auto-redirect: true
+  dns-hijack:
+    - any:53
