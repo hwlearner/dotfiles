@@ -11,7 +11,7 @@ log-level: warning                # 🎯 info→warning，减少日志 I/O
 ipv6: false
 external-controller: 127.0.0.1:9090
 external-ui: /etc/mihomo/ui
-secret: CMOSdianlu                # 🎯 新增：API 加密码
+secret: <YOUR_SECRET>                # 🎯 新增：API 加密码
 
 dns:
   enable: true

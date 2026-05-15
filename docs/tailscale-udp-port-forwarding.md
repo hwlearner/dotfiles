@@ -33,7 +33,7 @@ Mac（中国移动宽带）和家里服务器之间由于**对称 NAT**，Tailsc
 |------|-----|
 | **协议** | UDP |
 | **外部端口** | 41641 |
-| **内部 IP** | `192.168.1.12`（PVE 宿主机） |
+| **内部 IP** | `<目标主机 LAN IP>`（如 Arch `192.168.1.10`） |
 | **内部端口** | 41641 |
 | **描述** | Tailscale 直连 |
 
@@ -45,10 +45,10 @@ Mac 上执行：
 sudo launchctl kickstart -k system/net.sf.tailscale
 ```
 
-PVE 宿主机上：
+Arch/Linux 主机上：
 
 ```bash
-systemctl restart tailscaled
+sudo systemctl restart tailscaled
 ```
 
 ### 5. 验证
@@ -56,10 +56,10 @@ systemctl restart tailscaled
 在 Mac 上执行：
 
 ```bash
-tailscale ping --c 5 100.65.103.30
+tailscale ping --c 5 <目标主机 Tailscale IP>
 ```
 
-- ✅ **成功**: 看到 `pong via IP 192.168.1.12:41641` — 直连延迟 ~5ms
+- ✅ **成功**: 看到 `pong via IP <你的 LAN IP>:41641` — 直连延迟 ~5ms
 - ❌ **失败**: 看到 `pong via DERP` — 端口转发未生效，检查路由器设置
 
 也可以在 Mac 上检查连接状态：
@@ -68,4 +68,4 @@ tailscale ping --c 5 100.65.103.30
 tailscale status
 ```
 
-看到 `active; direct 192.168.1.12:41641` 即为直连成功。
+看到 `active; direct <LAN IP>:41641` 即为直连成功。
