@@ -2,22 +2,20 @@
 # 本机直连订阅，不走家里 Clash
 
 mixed-port: 7890
-allow-lan: false
-bind-address: 127.0.0.1
+redir-port: 7892
+tproxy-port: 7891
+allow-lan: true
+bind-address: 0.0.0.0
 mode: rule
 log-level: warning                # 🎯 info→warning，减少日志 I/O
 ipv6: false
 external-controller: 127.0.0.1:9090
-external-ui: /Users/han/.config/mihomo/ui
+external-ui: /etc/mihomo/ui
 secret: CMOSdianlu                # 🎯 新增：API 加密码
-
-profile:
-  store-selected: true
-  store-fake-ip: true
 
 dns:
   enable: true
-  listen: 127.0.0.1:1053
+  listen: 0.0.0.0:5353
   default-nameserver:
     - 223.5.5.5
     - 114.114.114.114
@@ -52,11 +50,11 @@ proxy-providers:
   Provider:
     type: http
     url: https://jfdddy.net/link/VTBaHMehkBM7MHTo?clash=1
-    interval: 3600
-    path: /Users/han/.config/mihomo/provider.yaml
+    interval: 1800                  # 🎯 3600→1800，订阅更新更快
+    path: /etc/mihomo/proxy-providers/provider.yaml
     health-check:
       enable: true
-      interval: 300
+      interval: 180
       url: http://www.gstatic.com/generate_204
 
 # ============================================================
@@ -69,82 +67,70 @@ rule-providers:
     behavior: domain
     url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt
     interval: 86400
-    path: /Users/han/.config/mihomo/rules/reject.yaml
+    path: /etc/mihomo/rules/reject.yaml
   direct:
     type: http
     behavior: domain
     url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt
     interval: 86400
-    path: /Users/han/.config/mihomo/rules/direct.yaml
+    path: /etc/mihomo/rules/direct.yaml
   private:
     type: http
     behavior: domain
     url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt
     interval: 86400
-    path: /Users/han/.config/mihomo/rules/private.yaml
+    path: /etc/mihomo/rules/private.yaml
   proxy:
     type: http
     behavior: domain
     url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt
     interval: 86400
-    path: /Users/han/.config/mihomo/rules/proxy.yaml
+    path: /etc/mihomo/rules/proxy.yaml
   apple:
     type: http
     behavior: domain
     url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt
     interval: 86400
-    path: /Users/han/.config/mihomo/rules/apple.yaml
+    path: /etc/mihomo/rules/apple.yaml
   icloud:
     type: http
     behavior: domain
     url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt
     interval: 86400
-    path: /Users/han/.config/mihomo/rules/icloud.yaml
+    path: /etc/mihomo/rules/icloud.yaml
   cncidr:
     type: http
     behavior: ipcidr
     url: https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt
     interval: 86400
-    path: /Users/han/.config/mihomo/rules/cncidr.yaml
+    path: /etc/mihomo/rules/cncidr.yaml
 
 proxy-groups:
-  - name: StableDirect
-    type: fallback
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    filter: 香港直连|日本直连
-    use:
-      - Provider
-
   - name: LowLatency
     type: url-test
     url: http://www.gstatic.com/generate_204
-    interval: 600
-    tolerance: 120
+    interval: 90
+    tolerance: 20
     # 只在近端节点里选，避免美国/法国这类远距离节点参与最低延迟竞争。
-    # 提高容忍度并降低测频，减少在“低延迟但不稳”的节点间来回抖动。
-    filter: 香港|HK|日本|JP|Tokyo|新加坡|SG|Singapore|台湾|TW|Taiwan
-    exclude-filter: ^v[0-9]-|LA|中转|网址|剩余流量|过期时间
+    filter: 香港|HK|日本|JP|Tokyo|新加坡|SG|Singapore|台湾|TW|Taiwan|韩国|KR|Korea|直连
     use:
       - Provider
 
   - name: Auto
     type: url-test
     url: http://www.gstatic.com/generate_204
-    interval: 300
-    tolerance: 80
+    interval: 180
+    tolerance: 30
     # 只保留真实节点，排除订阅里的网址/流量/到期说明项。
     filter: 香港|HK|日本|JP|Tokyo|新加坡|SG|Singapore|台湾|TW|Taiwan|韩国|KR|Korea|马来西亚|MY|Malaysia|美国|US|America|法国|FR|France|直连
-    exclude-filter: ^v[0-9]-|LA|中转|网址|剩余流量|过期时间
     use:
       - Provider
 
   - name: Fallback
     type: fallback
     url: http://www.gstatic.com/generate_204
-    interval: 300
+    interval: 180
     filter: 香港|HK|日本|JP|Tokyo|新加坡|SG|Singapore|台湾|TW|Taiwan|韩国|KR|Korea|马来西亚|MY|Malaysia|美国|US|America|法国|FR|France|直连
-    exclude-filter: ^v[0-9]-|LA|中转|网址|剩余流量|过期时间
     use:
       - Provider
 
@@ -152,19 +138,17 @@ proxy-groups:
     type: load-balance
     strategy: consistent-hashing
     url: http://www.gstatic.com/generate_204
-    interval: 300
+    interval: 180
     filter: 香港|HK|日本|JP|Tokyo|新加坡|SG|Singapore|台湾|TW|Taiwan|韩国|KR|Korea|马来西亚|MY|Malaysia|美国|US|America|法国|FR|France|直连
-    exclude-filter: ^v[0-9]-|LA|中转|网址|剩余流量|过期时间
     use:
       - Provider
 
   - name: Proxy
     type: select
     proxies:
-      - StableDirect
-      - Fallback
-      - Auto
       - LowLatency
+      - Auto
+      - Fallback
       - LoadBalance
       - DIRECT
     use:
@@ -172,18 +156,22 @@ proxy-groups:
 
 rules:
   # --- 自定义规则（高优先级）---
-  # 订阅和节点域名必须直连，否则坏节点会阻断订阅刷新和节点建连。
-  - DOMAIN-SUFFIX,jfdddy.net,DIRECT
-  - DOMAIN-SUFFIX,jf88.co,DIRECT
-  - DOMAIN-SUFFIX,hy2use.net,DIRECT
-  - DOMAIN-SUFFIX,fatdns.net,DIRECT
-
   # 国内 AI 服务直连
   - DOMAIN-SUFFIX,deepseek.com,DIRECT
   - DOMAIN-SUFFIX,minimax.com,DIRECT
   - DOMAIN-SUFFIX,hailuoai.com,DIRECT
   - DOMAIN-SUFFIX,ustc.edu.cn,DIRECT
   - DOMAIN-SUFFIX,debian.org,DIRECT
+  - DOMAIN-SUFFIX,steampowered.com,DIRECT
+  - DOMAIN-SUFFIX,steamcommunity.com,DIRECT
+  - DOMAIN-SUFFIX,steamstatic.com,DIRECT
+  - DOMAIN-SUFFIX,steamcontent.com,DIRECT
+  - DOMAIN-SUFFIX,steamusercontent.com,DIRECT
+  - DOMAIN-SUFFIX,steam-chat.com,DIRECT
+  - DOMAIN-SUFFIX,steamserver.net,DIRECT
+  - DOMAIN-SUFFIX,steamcdn-a.akamaihd.net,DIRECT
+  - DOMAIN-SUFFIX,steambroadcast.akamaized.net,DIRECT
+  - DOMAIN-SUFFIX,steampipe.akamaized.net,DIRECT
 
   # --- 社区规则集 (Loyalsoldier) ---
   - RULE-SET,reject,REJECT

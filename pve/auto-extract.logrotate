@@ -1,8 +1,0 @@
-/var/log/auto-extract.log {
-    weekly
-    rotate 8
-    compress
-    missingok
-    notifempty
-    create 0644 root root
-}
