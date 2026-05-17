@@ -1,5 +1,5 @@
 typeset -U path PATH
-path=("$HOME/.local/bin" "$HOME/.cargo/bin" $path)
+path=("$HOME/.bun/bin" "$HOME/.local/bin" "$HOME/.cargo/bin" $path)
 
 if [[ "$(uname -s)" == "Darwin" && -d /opt/homebrew/opt/rustup/bin ]]; then
   path=(/opt/homebrew/opt/rustup/bin $path)

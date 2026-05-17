@@ -41,6 +41,9 @@ fi
 if command -v bat >/dev/null 2>&1; then
   alias cat="bat --paging=never"
 fi
+if command -v eza >/dev/null 2>&1; then
+  alias ls="eza"
+fi
 alias grep="grep --color=auto"
 
 if [[ -r "$HOME/.zshrc.local" ]]; then

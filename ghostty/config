@@ -7,11 +7,11 @@ window-padding-y = 12
 macos-titlebar-style = hidden
 cursor-style = block
 cursor-style-blink = false
-background-opacity = 0.3
-background-opacity-cells = true
-background-blur = 100
 
 # Prefer separate windows over native tabs so AeroSpace can tile Ghostty reliably.
 window-save-state = never
 keybind = cmd+t=new_window
 keybind = cmd+n=new_window
+
+# Oh My Pi: make Option+Backspace send the expected delete-word sequence.
+keybind = alt+backspace=text:\x1b\x7f

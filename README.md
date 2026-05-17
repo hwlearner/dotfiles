@@ -96,6 +96,6 @@ brew bundle --file=Brewfile
 | 主机 | 系统 | 角色 |
 |------|------|------|
 | archan | Arch Linux | 代理网关、NAS、开发容器 |
-| MiniHan | Windows 11 | IM 智能体主控、n8n |
+| MiniHan | Windows 11 | IM 智能体主控 |
 
 运维手册见各主机本地 Documents 目录。

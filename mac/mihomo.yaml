@@ -111,20 +111,19 @@ proxy-groups:
   - name: StableDirect
     type: fallback
     url: http://www.gstatic.com/generate_204
-    interval: 300
-    filter: 香港直连|日本直连
+    interval: 180
+    # 主力组只保留实测能连通的直连 Hysteria2 节点；避免切到大批 VLESS/订阅说明项导致抖动。
+    filter: 香港直连[1-6]|日本直连[1-3]
     use:
       - Provider
 
   - name: LowLatency
     type: url-test
     url: http://www.gstatic.com/generate_204
-    interval: 600
-    tolerance: 120
-    # 只在近端节点里选，避免美国/法国这类远距离节点参与最低延迟竞争。
-    # 提高容忍度并降低测频，减少在“低延迟但不稳”的节点间来回抖动。
-    filter: 香港|HK|日本|JP|Tokyo|新加坡|SG|Singapore|台湾|TW|Taiwan
-    exclude-filter: ^v[0-9]-|LA|中转|网址|剩余流量|过期时间
+    interval: 300
+    tolerance: 80
+    # 近端低延迟候选；保留日本直连作为香港节点拥塞时的低延迟备选。
+    filter: 香港直连[1-6]|日本直连[1-3]
     use:
       - Provider
 
@@ -132,19 +131,18 @@ proxy-groups:
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
-    tolerance: 80
-    # 只保留真实节点，排除订阅里的网址/流量/到期说明项。
-    filter: 香港|HK|日本|JP|Tokyo|新加坡|SG|Singapore|台湾|TW|Taiwan|韩国|KR|Korea|马来西亚|MY|Malaysia|美国|US|America|法国|FR|France|直连
-    exclude-filter: ^v[0-9]-|LA|中转|网址|剩余流量|过期时间
+    tolerance: 120
+    # 自动组只在近期可用且延迟相对可控的节点里选择。
+    filter: 香港直连[1-6]|日本直连[1-3]|美国0[1-2]
     use:
       - Provider
 
   - name: Fallback
     type: fallback
     url: http://www.gstatic.com/generate_204
-    interval: 300
-    filter: 香港|HK|日本|JP|Tokyo|新加坡|SG|Singapore|台湾|TW|Taiwan|韩国|KR|Korea|马来西亚|MY|Malaysia|美国|US|America|法国|FR|France|直连
-    exclude-filter: ^v[0-9]-|LA|中转|网址|剩余流量|过期时间
+    interval: 180
+    # 故障切换组按稳定性优先，不纳入当前大量探测失败的 v2/v3/v4/v5 节点。
+    filter: 香港直连[1-6]|日本直连[1-3]|美国0[1-2]
     use:
       - Provider
 
@@ -153,8 +151,7 @@ proxy-groups:
     strategy: consistent-hashing
     url: http://www.gstatic.com/generate_204
     interval: 300
-    filter: 香港|HK|日本|JP|Tokyo|新加坡|SG|Singapore|台湾|TW|Taiwan|韩国|KR|Korea|马来西亚|MY|Malaysia|美国|US|America|法国|FR|France|直连
-    exclude-filter: ^v[0-9]-|LA|中转|网址|剩余流量|过期时间
+    filter: 香港直连[1-6]|日本直连[1-3]
     use:
       - Provider
 
@@ -162,13 +159,11 @@ proxy-groups:
     type: select
     proxies:
       - StableDirect
+      - LowLatency
       - Fallback
       - Auto
-      - LowLatency
       - LoadBalance
       - DIRECT
-    use:
-      - Provider
 
 rules:
   # --- 自定义规则（高优先级）---

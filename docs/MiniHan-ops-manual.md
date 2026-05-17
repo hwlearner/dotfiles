@@ -1,6 +1,6 @@
 # MiniHan 运维手册
 
-最后更新：2026-05-16
+最后更新：2026-05-17
 
 ## 主机概览
 
@@ -51,84 +51,12 @@
 | Node.js | 24.15.0 |
 | uv | 0.11.14 |
 
-## LangBot
-
-- 版本：v4.9.3
-- 路径：`C:\LangBot\`
-- WebUI：`http://127.0.0.1:5300`
-- 模型：`deepseek-v4-flash`（thinking 通过补丁禁用）
-- 飞书：已接入（无 Webhook，流式回复关闭）
-- MCP 服务器：`win-ops`（6 个工具，见 MCP 章节）
-
-启动：schtasks `LangBot`（系统启动自动运行）
-
-### DeepSeek thinking 补丁
-
-文件：`src/langbot/pkg/provider/modelmgr/requesters/chatcmpl.py`
-
-```python
-extra_body["thinking"] = {"type": "disabled"}
-```
-
-## n8n
-
-- 版本：2.20.9
-- WebUI：`http://127.0.0.1:5678`
-- 数据：`%USERPROFILE%\.n8n\`
-- 启动：schtasks `n8n`（系统启动自动运行）
-
-首次访问需创建管理员账户。
-
-## 运维脚本 (Windows)
-
-路径：`C:\Users\han\scripts\`
-
-| 脚本 | 用途 |
-|------|------|
-| `win-status.ps1` | 系统状态 JSON |
-| `win-service.ps1` | 服务 start/stop/restart/status |
-| `win-eventlog.ps1` | 事件日志 tail |
-| `win-ops-mcp.py` | MCP 服务器 (LangBot 调用) |
-| `n8n-start.bat` | n8n 备用手动启动 |
-
-## MCP 服务器 win-ops
-
-6 个工具：
-
-| 工具 | 执行位置 | 实现 |
-|------|---------|------|
-| `win_status` | Windows | PowerShell |
-| `win_service` | Windows | PowerShell |
-| `win_eventlog` | Windows | PowerShell |
-| `arch_status` | Arch (192.168.1.10) | SSH → devops |
-| `arch_service` | Arch | SSH → devops |
-| `arch_podman` | Arch | SSH → devops |
-
-SSH 密钥：`C:\Users\han\.ssh\id_ed25519_devops`（用于 devops@archan 受限账户）
-
-## 计划任务
-
-| 名称 | 触发 | 命令 |
-|------|------|------|
-| `LangBot` | ONSTART | `pythonw.exe C:\LangBot\main.py` |
-| `n8n` | ONSTART | `n8n_svc.bat` |
-
 ## 常用命令
 
 ```cmd
 rem 电源
 powercfg /a
 powercfg /qh SCHEME_CURRENT SUB_SLEEP
-
-rem 端口
-netstat -ano | findstr :5300
-netstat -ano | findstr :5678
-
-rem 进程
-tasklist | findstr python
-
-rem LangBot 日志
-type C:\LangBot\data\logs\langbot-2026-05-15.log
 
 rem 代理
 curl http://192.168.1.10:7890
