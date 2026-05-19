@@ -75,45 +75,21 @@ on-mode-changed = []
     outer.right =      8
 
 [[on-window-detected]]
-    if.app-id = 'com.openai.codex'
-    run = 'move-node-to-workspace 1'
-
-[[on-window-detected]]
-    if.app-id = 'com.apple.Safari'
-    run = 'move-node-to-workspace 3'
-
-[[on-window-detected]]
-    if.app-id = 'com.google.Chrome'
-    run = 'move-node-to-workspace 3'
-
-[[on-window-detected]]
-    if.app-id = 'com.mitchellh.ghostty'
-    run = 'move-node-to-workspace 1'
-
-[[on-window-detected]]
     if.app-id = 'dev.zed.Zed'
     if.window-title-regex-substring = 'Settings'
     run = 'layout floating'
 
 [[on-window-detected]]
-    if.app-id = 'com.tencent.xinWeChat'
-    run = 'move-node-to-workspace 4'
-
-[[on-window-detected]]
     if.app-id = 'com.apple.Notes'
-    run = ['layout floating', 'move-node-to-workspace 4']
+    run = 'layout floating'
 
 [[on-window-detected]]
     if.app-id = 'com.apple.TextEdit'
-    run = ['layout floating', 'move-node-to-workspace 4']
+    run = 'layout floating'
 
 [[on-window-detected]]
     if.app-id = 'com.apple.Preview'
-    run = ['layout floating', 'move-node-to-workspace 4']
-
-[[on-window-detected]]
-    if.app-id = 'com.apple.mail'
-    run = 'move-node-to-workspace 4'
+    run = 'layout floating'
 
 [[on-window-detected]]
     if.app-id = 'com.apple.systempreferences'
@@ -124,12 +100,8 @@ on-mode-changed = []
     run = 'layout floating'
 
 [[on-window-detected]]
-    if.app-id = 'com.apple.finder'
-    run = 'layout floating'
-
-[[on-window-detected]]
     if.app-id = 'com.apple.Numbers'
-    run = ['layout floating', 'move-node-to-workspace 4']
+    run = 'layout floating'
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -154,16 +126,8 @@ on-mode-changed = []
 
     # All possible commands: https://nikitabobko.github.io/AeroSpace/commands
 
-    # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
-    # You can uncomment the following lines to open up terminal with alt + enter shortcut
-    # (like in i3)
-    # alt-enter = '''exec-and-forget osascript -e '
-    # tell application "Terminal"
-    #     do script
-    #     activate
-    # end tell'
-    # '''
-
+    # Open terminal (like i3's Mod+Enter)
+    alt-enter = 'exec-and-forget open -na /Applications/Ghostty.app'
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
     alt-slash = 'layout tiles horizontal vertical'
     alt-comma = 'layout accordion horizontal vertical'

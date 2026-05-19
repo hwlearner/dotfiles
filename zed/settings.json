@@ -4,18 +4,14 @@
     "light": "Catppuccin Latte",
     "dark": "Catppuccin Mocha"
   },
-  "agent": {
-    "default_model": {
-      "provider": "deepseek",
-      "model": "deepseek-v4-flash",
-      "enable_thinking": true,
-      "effort": "high"
-    },
-    "favorite_models": [],
-    "model_parameters": []
-  },
-  "agent_servers": {
-    
+"edit_predictions": {
+    "provider": "open_ai_compatible_api",
+    "open_ai_compatible_api": {
+      "api_url": "https://api.deepseek.com/beta/completions",
+      "model": "deepseek-v4-pro",
+      "prompt_format": "deepseek_coder",
+      "max_output_tokens": 256
+    }
   },
   "base_keymap": "VSCode",
   "vim_mode": true,

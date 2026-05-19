@@ -28,8 +28,8 @@ if [[ -o interactive && -t 0 && -t 1 && -r "$fzf_base/completion.zsh" ]]; then
 fi
 unset fzf_base
 
-if command -v direnv >/dev/null 2>&1; then
-  eval "$(direnv hook zsh)"
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
 fi
 
 alias vi=nvim
@@ -62,3 +62,23 @@ fi
 if [[ "$(uname -s)" != "Darwin" && -d "$HOME/.opencode/bin" ]]; then
   export PATH="$HOME/.opencode/bin:$PATH"
 fi
+
+# ==============================================================================
+# fd + zf — 模糊搜索目录并跳转
+# ==============================================================================
+function j() {
+    local dir
+    dir=$(fd --type d --hidden --follow --exclude .git . "${1:-.}" 2>/dev/null | zf) && cd "$dir"
+}
+
+# ==============================================================================
+# yazi — 终端文件管理器，退出后 cd 到所在目录
+# ==============================================================================
+function y() {
+    local tmp="$(mktemp -t "yazi-cwd.XXXXX")"
+    yazi "$@" --cwd-file="$tmp"
+    if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+        cd -- "$cwd"
+    fi
+    rm -f -- "$tmp"
+}
