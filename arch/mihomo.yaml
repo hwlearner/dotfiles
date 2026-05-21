@@ -1,5 +1,6 @@
-# macOS Mihomo — 优化版
-# 本机直连订阅，不走家里 Clash
+# archan 代理网关 — Mihomo 运行配置
+# 直连订阅模式，自选节点，不走家里 Clash
+# 注：最初从 macOS 搬来的，已在 Arch Linux 上稳定运行
 
 mixed-port: 7890
 redir-port: 7892
