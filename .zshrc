@@ -6,7 +6,7 @@ export OPENSPEC_TELEMETRY=0
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=50000
 SAVEHIST=50000
-setopt append_history share_history hist_ignore_dups hist_ignore_space extended_glob auto_cd
+setopt append_history share_history hist_ignore_dups hist_ignore_space extended_glob
 
 autoload -Uz compinit
 compinit -d "${ZSH_COMPDUMP:-$HOME/.zcompdump}"
@@ -82,3 +82,7 @@ function y() {
     fi
     rm -f -- "$tmp"
 }
+# 容器自动跳转到 workspace
+if [[ -d /workspace ]]; then
+  cd /workspace
+fi
