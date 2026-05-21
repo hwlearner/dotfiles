@@ -2,6 +2,24 @@
 # Catppuccin Mocha 色系 — 与 Ghostty 主题匹配
 palette = "catppuccin_mocha"
 # ──────────────────────────────────────────
+# 全局格式
+# ──────────────────────────────────────────
+format = """\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$mise\
+$rust\
+$python\
+$bun\
+$nodejs\
+$cmd_duration\
+$line_break\
+$character"""
+
+# ──────────────────────────────────────────
 # 调色板
 # ──────────────────────────────────────────
 [palettes]
@@ -30,25 +48,6 @@ catppuccin_mocha = {
   mantle = "#181825",
   crust = "#11111b",
 }
-
-# ──────────────────────────────────────────
-# 全局格式
-# ──────────────────────────────────────────
-format = """\
-$username\
-$hostname\
-$directory\
-$git_branch\
-$git_status\
-$mise\
-$rust\
-$python\
-$bun\
-$nodejs\
-$fill\
-$cmd_duration\
-$line_break\
-$character"""
 
 # ──────────────────────────────────────────
 # 模块配置
@@ -129,8 +128,6 @@ disabled = true
 [azure]
 disabled = true
 [c]
-disabled = true
-[cloud]
 disabled = true
 [cmake]
 disabled = true
@@ -271,8 +268,6 @@ disabled = true
 [xmake]
 disabled = true
 [zig]
-disabled = true
-[zoxide]
 disabled = true
 [direnv]
 disabled = true
