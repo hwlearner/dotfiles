@@ -1,0 +1,47 @@
+modelRoles: 
+  default: deepseek/deepseek-v4-flash:off
+  slow: my_codex/gpt-5.5:high
+  plan: deepseek/deepseek-v4-pro:xhigh
+  smol: scnet/MiniMax-M2.5
+  task: deepseek/deepseek-v4-pro
+modelProviderOrder: 
+  - my_codex
+  - deepseek
+  - scnet
+lastChangelogVersion: 15.1.8
+symbolPreset: nerd
+statusLine: 
+  preset: custom
+  separator: powerline
+  sessionAccent: true
+  leftSegments:
+    - model
+    - mode
+    - path
+    - git
+    - pr
+  rightSegments: 
+    - session_name
+    - subagents
+    - context_pct
+  segmentOptions: 
+    model: 
+      showThinkingLevel: true
+    path: 
+      abbreviate: true
+      maxLength: 40
+      stripWorkPrefix: true
+    git: 
+      showBranch: true
+      showStaged: true
+      showUnstaged: true
+      showUntracked: true
+theme: 
+  dark: dark-catppuccin
+  light: light-catppuccin
+hideThinkingBlock: true
+defaultThinkingLevel: low
+disabledProviders: 
+  - ollama
+  - lm-studio
+  - llama.cpp
