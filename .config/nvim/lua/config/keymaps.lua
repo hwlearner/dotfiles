@@ -41,8 +41,9 @@ map("n", "<leader>bo", "<cmd>%bdelete|edit #|bdelete #<cr>", { desc = "删除其
 
 -- 保存
 map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "保存文件" })
--- 包管理
-map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "打开插件管理" })
+-- 包管理（vim.pack 原生包管理器）
+map("n", "<leader>l", function() vim.pack.update(nil, { offline = true }) end, { desc = "插件状态" })
+map("n", "<leader>L", function() vim.pack.update() end, { desc = "插件更新" })
 
 -- 取消高亮（按 Esc）
 map({ "i", "n", "s" }, "<esc>", function()

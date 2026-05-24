@@ -15,3 +15,4 @@ keybind = cmd+n=new_window
 
 # Oh My Pi: make Option+Backspace send the expected delete-word sequence.
 keybind = alt+backspace=text:\x1b\x7f
+background-opacity = 0.85

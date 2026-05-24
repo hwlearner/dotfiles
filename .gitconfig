@@ -5,3 +5,7 @@
 	path = ~/.gitconfig.local
 [core]
 	excludesFile = /Users/han/Projects/dotfiles/.gitignore_global
+[http]
+	proxy = http://127.0.0.1:7890
+[https]
+	proxy = http://127.0.0.1:7890

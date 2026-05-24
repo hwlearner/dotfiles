@@ -1,6 +1,6 @@
 # 快捷键差异对照 — 当前配置 vs LazyVim
 
-> 当前配置是基于 lazy.nvim 的手写配置，非 LazyVim 发行版。
+> 当前配置基于 vim.pack（Neovim 0.12 内置包管理器），非 LazyVim 发行版。
 > 此文档列出 LazyVim 有但我们没有的快捷键，供后续按需添加参考。
 
 ## 已有覆盖（与 LazyVim 对齐的部分）
@@ -23,7 +23,7 @@
 | 诊断 | `<leader>cd` `]d` `[d` | 诊断浮窗/跳转 |
 | Git | `]h` `[h` / `<leader>ghs/r/b/d` | hunk 导航/操作 |
 | Mason | `<leader>cm` | LSP 安装器 |
-| 包管理 | `<leader>l` | lazy.nvim 插件管理 |
+| 包管理 | `<leader>l` / `<leader>L` | vim.pack 插件状态/更新 |
 | which-key | `<leader>?` | 显示当前按键 |
 
 ## 缺失 — 无需额外插件
