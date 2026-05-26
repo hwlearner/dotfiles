@@ -87,9 +87,3 @@ fi
 
 # bun completions
 [ -s "/home/han/.bun/_bun" ] && source "/home/han/.bun/_bun"
-# mihomo 代理（检测到本地运行时自动启用，容器里不会设置）
-if pgrep -x mihomo &>/dev/null; then
-  export HTTP_PROXY=http://127.0.0.1:7890
-  export HTTPS_PROXY=http://127.0.0.1:7890
-  export NO_PROXY=localhost,127.0.0.1,.local,.lan,.pi,10.0.0.0/8
-fi
