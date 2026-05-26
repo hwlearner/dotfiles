@@ -1,0 +1,38 @@
+.DS_Store
+
+# Shell/editor local state
+.zsh_history
+.viminfo
+*.swp
+*.swo
+nvim.log
+
+*.bak
+# Secrets and app state
+.ssh/
+.gnupg/
+.claude.json
+.claude/
+.codex/
+.config/gh/hosts.yml
+vscode/User/globalStorage/
+
+# Downloaded plugin/runtime state
+.tmux/plugins/
+vscode/extensions/
+nvim/.lazy/
+nvim/lazy/
+nvim/.local/
+pve.md
+
+# PVE homelab private overrides
+pve/*.private.*
+
+# Git deploy keys
+pve/git-deploy-key
+pve/git-deploy-key.pub
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.egg-info/

@@ -1,0 +1,36 @@
+#!/bin/bash
+# arch-agent-podman - Container operations
+set -euo pipefail
+
+action="${1:-}"
+name="${2:-}"
+
+usage() {
+    echo "Usage: arch-agent-podman <ps|logs|start|stop|restart|inspect> [container]"
+    exit 1
+}
+
+[ -n "$action" ] || usage
+
+case "$action" in
+    ps)
+        podman ps -a --format '{{.Names}} {{.Status}} {{.Image}}'
+        ;;
+    logs)
+        [ -n "$name" ] || { echo "Container name required"; exit 1; }
+        podman logs --tail 50 "$name" 2>&1
+        ;;
+    start|stop|restart)
+        [ -n "$name" ] || { echo "Container name required"; exit 1; }
+        podman "$action" "$name" 2>&1
+        echo "{\"action\":\"$action\",\"container\":\"$name\",\"result\":\"ok\"}"
+        ;;
+    inspect)
+        [ -n "$name" ] || { echo "Container name required"; exit 1; }
+        podman inspect "$name" --format '{{json .}}' 2>&1 | python3 -m json.tool 2>/dev/null || podman inspect "$name"
+        ;;
+    *)
+        echo "Unknown action: $action"
+        usage
+        ;;
+esac

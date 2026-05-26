@@ -1,0 +1,58 @@
+{
+  "icon_theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Mocha"
+  },
+"edit_predictions": {
+    "provider": "open_ai_compatible_api",
+    "open_ai_compatible_api": {
+      "api_url": "https://api.deepseek.com/beta/completions",
+      "model": "deepseek-v4-pro",
+      "prompt_format": "deepseek_coder",
+      "max_output_tokens": 256
+    }
+  },
+  "base_keymap": "VSCode",
+  "vim_mode": true,
+  "theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Mocha"
+  },
+  "buffer_font_family": "Maple Mono NL NF CN",
+  "buffer_font_size": 14,
+  "ui_font_size": 14,
+  "agent_ui_font_size": 14,
+  "relative_line_numbers": "enabled",
+  "autosave": "off",
+  "format_on_save": "off",
+  "show_edit_predictions": true,
+  "soft_wrap": "editor_width",
+  "preferred_line_length": 120,
+  "project_panel": {
+    "dock": "left"
+  },
+  "terminal": {
+    "shell": {
+      "program": "/bin/zsh"
+    },
+    "font_family": "Maple Mono NL NF CN"
+  },
+  "languages": {
+    "Markdown": {
+      "soft_wrap": "editor_width",
+      "format_on_save": "off"
+    },
+    "C": {
+      "format_on_save": "off"
+    },
+    "C++": {
+      "format_on_save": "off"
+    }
+  },
+  "telemetry": {
+    "metrics": false,
+    "diagnostics": false
+  }
+}

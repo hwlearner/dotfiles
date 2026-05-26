@@ -1,0 +1,6 @@
+MD013: false   # line-length：不限制行宽
+MD022: false   # blanks-around-headings：标题前后不强制空行
+MD032: false   # blanks-around-lists：列表前后不强制空行
+MD036: false   # no-emphasis-as-heading：允许用 **WHEN**/**THEN** 这类强调式步骤标签
+MD040: false   # fenced-code-language：代码块不强制写语言
+MD060: false   # table-column-style：表格列样式不强制

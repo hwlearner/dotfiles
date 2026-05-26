@@ -1,0 +1,287 @@
+# Starship 提示符配置
+# Catppuccin Mocha 色系 — 与 Ghostty 主题匹配
+palette = "catppuccin_mocha"
+# ──────────────────────────────────────────
+# 全局格式
+# ──────────────────────────────────────────
+format = """\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$mise\
+$rust\
+$python\
+$bun\
+$nodejs\
+$cmd_duration\
+$line_break\
+$character"""
+
+# ──────────────────────────────────────────
+# 调色板
+# ──────────────────────────────────────────
+[palettes]
+catppuccin_mocha = {
+  rosewater = "#f5e0dc",
+  flamingo = "#f2cdcd",
+  pink = "#f5c2e7",
+  mauve = "#cba6f7",
+  red = "#f38ba8",
+  maroon = "#eba0ac",
+  peach = "#fab387",
+  yellow = "#f9e2af",
+  green = "#a6e3a1",
+  teal = "#94e2d5",
+  sky = "#89dceb",
+  sapphire = "#74c7ec",
+  blue = "#89b4fa",
+  lavender = "#b4befe",
+  text = "#cdd6f4",
+  subtext1 = "#bac2de",
+  subtext0 = "#a6adc8",
+  surface2 = "#585b70",
+  surface1 = "#45475a",
+  surface0 = "#313244",
+  base = "#1e1e2e",
+  mantle = "#181825",
+  crust = "#11111b",
+}
+
+# ──────────────────────────────────────────
+# 模块配置
+# ──────────────────────────────────────────
+
+[character]
+format = "$symbol "
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold green)"
+vimcmd_visual_symbol = "[❮](bold yellow)"
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+fish_style_pwd_dir_length = 1
+style = "bold cyan"
+home_symbol = "~"
+
+[git_branch]
+format = "on [$symbol$branch]($style) "
+symbol = " "
+style = "bold purple"
+truncation_length = 24
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+style = "bold yellow"
+
+[mise]
+format = "via [mise $health]($style) "
+style = "bold purple"
+
+[rust]
+format = "via [$symbol($version )]($style)"
+symbol = "🦀 "
+style = "bold red"
+
+[python]
+format = 'via [${symbol}(${version} )(\($virtualenv\) )]($style)'
+style = "bold yellow"
+symbol = "🐍 "
+
+[bun]
+format = "via [$symbol($version )]($style)"
+symbol = "🥟 "
+style = "bold red"
+
+[nodejs]
+format = "via [$symbol($version )]($style)"
+symbol = " "
+style = "bold green"
+
+[cmd_duration]
+min_time = 2000
+format = "took [$duration]($style) "
+style = "yellow bold"
+
+[fill]
+style = "bold black"
+
+[hostname]
+ssh_only = true
+ssh_symbol = "🌐 "
+style = "green dimmed bold"
+format = "[$ssh_symbol$hostname]($style) in "
+
+[username]
+show_always = false
+style_user = "yellow bold"
+format = "[$user]($style) in "
+
+# ──────────────────────────────────────────
+# 默认禁用的模块（不占用 scan_timeout）
+# ──────────────────────────────────────────
+[aws]
+disabled = true
+[azure]
+disabled = true
+[c]
+disabled = true
+[cmake]
+disabled = true
+[cobol]
+disabled = true
+[conda]
+disabled = true
+[container]
+disabled = true
+[cpp]
+disabled = true
+[crystal]
+disabled = true
+[daml]
+disabled = true
+[dart]
+disabled = true
+[deno]
+disabled = true
+[docker_context]
+disabled = true
+[dotnet]
+disabled = true
+[elixir]
+disabled = true
+[elm]
+disabled = true
+[erlang]
+disabled = true
+[gcloud]
+disabled = true
+[gleam]
+disabled = true
+[golang]
+disabled = true
+[gradle]
+disabled = true
+[guix_shell]
+disabled = true
+[haskell]
+disabled = true
+[haxe]
+disabled = true
+[helm]
+disabled = true
+[java]
+disabled = true
+[jobs]
+disabled = true
+[julia]
+disabled = true
+[kotlin]
+disabled = true
+[kubernetes]
+disabled = true
+[localip]
+disabled = true
+[lua]
+disabled = true
+[maven]
+disabled = true
+[memory_usage]
+disabled = true
+[meson]
+disabled = true
+[mojo]
+disabled = true
+[nats]
+disabled = true
+[netns]
+disabled = true
+[nim]
+disabled = true
+[nix_shell]
+disabled = true
+[ocaml]
+disabled = true
+[odin]
+disabled = true
+[opa]
+disabled = true
+[openstack]
+disabled = true
+[os]
+disabled = true
+[package]
+disabled = true
+[perl]
+disabled = true
+[php]
+disabled = true
+[pixi]
+disabled = true
+[pulumi]
+disabled = true
+[purescript]
+disabled = true
+[quarto]
+disabled = true
+[raku]
+disabled = true
+[red]
+disabled = true
+[rlang]
+disabled = true
+[ruby]
+disabled = true
+[scala]
+disabled = true
+[shell]
+disabled = true
+[shlvl]
+disabled = true
+[singularity]
+disabled = true
+[solidity]
+disabled = true
+[spack]
+disabled = true
+[status]
+disabled = true
+[sudo]
+disabled = true
+[swift]
+disabled = true
+[terraform]
+disabled = true
+[time]
+disabled = true
+[typst]
+disabled = true
+[vagrant]
+disabled = true
+[vcsh]
+disabled = true
+[vlang]
+disabled = true
+[xmake]
+disabled = true
+[zig]
+disabled = true
+[direnv]
+disabled = true
+[fennel]
+disabled = true
+[fortran]
+disabled = true
+[fossil_branch]
+disabled = true
+[fossil_metrics]
+disabled = true
+[hg_branch]
+disabled = true
+[hg_state]
+disabled = true
+[pijul_channel]
+disabled = true
