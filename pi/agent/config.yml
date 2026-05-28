@@ -3,7 +3,7 @@ modelRoles:
   slow: my_codex/gpt-5.5:high
   plan: deepseek/deepseek-v4-pro:xhigh
   smol: scnet/MiniMax-M2.5
-  task: deepseek/deepseek-v4-pro
+  task: my_codex/gpt-5.5:low
 modelProviderOrder: 
   - my_codex
   - deepseek
@@ -17,6 +17,7 @@ statusLine:
   leftSegments:
     - model
     - mode
+    - hostname
     - path
     - git
     - pr
@@ -45,3 +46,6 @@ disabledProviders:
   - ollama
   - lm-studio
   - llama.cpp
+
+startup:
+  checkUpdate: false

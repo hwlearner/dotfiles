@@ -3,6 +3,7 @@ export VISUAL=nvim
 export PAGER=less
 export OPENSPEC_TELEMETRY=0
 
+
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=50000
 SAVEHIST=50000

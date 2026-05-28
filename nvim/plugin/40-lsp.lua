@@ -45,25 +45,27 @@ vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
           vim.lsp.completion.enable(true, client.id, buf, { autotrigger = true })
         end
 
-        vim.keymap.set("n", "<leader>cf", function()
-          vim.lsp.buf.format({ async = false, bufnr = buf })
-        end, { buffer = buf, desc = "格式化" })
-
+        -- 自定义映射（0.12 已自带 K/gd/gr/gy/[d/]d 等默认映射）
         local sk = function(lhs, rhs, desc, cap)
           if not cap or has(cap) then
             vim.keymap.set("n", lhs, rhs, { buffer = buf, desc = desc, silent = true })
           end
         end
-        sk("K", vim.lsp.buf.hover, "悬停文档")
-        sk("gd", vim.lsp.buf.definition, "跳转定义", "definition")
-        sk("gr", vim.lsp.buf.references, "查找引用", "references")
+        sk("<leader>cf", function()
+          vim.lsp.buf.format({ async = false, bufnr = buf })
+        end, "格式化")
         sk("gI", vim.lsp.buf.implementation, "跳转实现", "implementation")
-        sk("gy", vim.lsp.buf.type_definition, "跳转类型定义", "typeDefinition")
         sk("<leader>ca", vim.lsp.buf.code_action, "代码操作", "codeAction")
         sk("<leader>cr", vim.lsp.buf.rename, "重命名", "rename")
         sk("<leader>cd", vim.diagnostic.open_float, "行诊断")
-        sk("]d", function() vim.diagnostic.jump({ count = 1 }) end, "下一诊断")
-        sk("[d", function() vim.diagnostic.jump({ count = -1 }) end, "上一诊断")
+        sk("gK", vim.lsp.buf.signature_help, "签名帮助", "signatureHelp")
+        sk("<leader>cl", "<cmd>LspInfo<cr>", "LSP 信息")
+        sk("<leader>co", function()
+          vim.lsp.buf.code_action({
+            context = { only = { "source.organizeImports" } },
+            apply = true,
+          })
+        end, "整理导入", "codeAction")
       end,
     })
 
