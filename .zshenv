@@ -1,9 +1,7 @@
 typeset -U path PATH
 path=("$HOME/.bun/bin" "$HOME/.local/bin" "$HOME/.cargo/bin" $path)
 
-if [[ "$(uname -s)" == "Darwin" && -d /opt/homebrew/opt/rustup/bin ]]; then
-  path=(/opt/homebrew/opt/rustup/bin $path)
-fi
+
 
 if [[ -d "$HOME/.local/share/nvim/mason/bin" ]]; then
   path=($path "$HOME/.local/share/nvim/mason/bin")
