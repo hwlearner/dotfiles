@@ -11,8 +11,6 @@
 - `git/ignore`：来自 `~/.config/git/ignore` 的全局 Git 忽略规则。
 - `arch/`：Linux 运维脚本（agent 接口、devops-shell 等）。
 - `yazi/`：Yazi 文件管理器配置。
-- `zellij/`：Zellij 终端复用器配置。
-
 ## 配置分层
 
 - 公共配置直接放在仓库根目录。
