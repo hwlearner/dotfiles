@@ -6,10 +6,10 @@
 
 - `.zshrc`、`.zprofile`、`.zshenv`、`.gitconfig`：Shell 和 Git 的基础配置。
 - `.markdownlint.yaml`：共享的 markdownlint 规则。
+- `nvim/`：来自 `~/.config/nvim` 的 Neovim 配置。
 - `ghostty/`：来自 `~/.config/ghostty` 的 Ghostty 配置。
 - `git/ignore`：来自 `~/.config/git/ignore` 的全局 Git 忽略规则。
 - `arch/`：Linux 运维脚本（agent 接口、devops-shell 等）。
-- `starship.toml`：Starship prompt 配置。
 - `yazi/`：Yazi 文件管理器配置。
 - `zellij/`：Zellij 终端复用器配置。
 
