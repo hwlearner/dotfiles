@@ -8,13 +8,13 @@ modelProviderOrder:
   - my_codex
   - deepseek
   - scnet
-lastChangelogVersion: 15.1.8
+lastChangelogVersion: 15.7.5
 symbolPreset: nerd
 statusLine: 
   preset: custom
   separator: powerline
   sessionAccent: true
-  leftSegments:
+  leftSegments: 
     - model
     - mode
     - hostname
@@ -46,6 +46,8 @@ disabledProviders:
   - ollama
   - lm-studio
   - llama.cpp
-
-startup:
+startup: 
   checkUpdate: false
+providers: 
+  webSearch: exa
+setupVersion: 1
