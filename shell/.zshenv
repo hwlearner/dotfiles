@@ -17,3 +17,4 @@ if [[ -r "$HOME/.zshenv.local" ]]; then
 fi
 
 export PATH
+export EXA_API_KEY=$(pass show api/exa 2>/dev/null)
